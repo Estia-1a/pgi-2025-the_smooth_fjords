@@ -10,8 +10,8 @@ pixelRGB* get_pixel(unsigned char *data, const unsigned int *width, const unsign
   if (data == NULL || x >= *width || y >= *height) {
     return NULL; // VÃ©rification des prÃ©conditions
   }
- 
+
   unsigned int pixel_index = (y * (*width) + x) * n;
- 
+
   return (pixelRGB*) &data[pixel_index];
 }

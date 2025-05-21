@@ -21,9 +21,8 @@ void dimension (char *source_path) {
     int channel_count;
     unsigned char *data;
     int resultat = read_image_data(source_path, &data, &width, &height, &channel_count);
-   
     if (resultat) {
-        printf("Dimension: %d,%d", width, height);
+        printf("dimension: %d, %d", width,height);
     }
     else {
         printf("ERROR");
@@ -32,15 +31,17 @@ void dimension (char *source_path) {
 
 void first_pixel(char *source_path){
     unsigned char *data;
-    int width, height, nbChannels;
+    int width;
+    int height;
+    int nbChannels;
     if (read_image_data(source_path, &data, &width, &height, &nbChannels)) {
         printf("first_pixel: %d, %d, %d\n", data[0], data[1], data[2]);
-        free(data);
     }
     else {
         printf("ERROR");
     }
 }
+
 void tenth_pixel(char *source_path){
     unsigned char *data;
     int width;
@@ -53,7 +54,7 @@ void tenth_pixel(char *source_path){
         printf("ERROR");
     }
 }
- 
+
 void second_line(char *source_path){
     unsigned char *data;
     int width;
@@ -61,7 +62,7 @@ void second_line(char *source_path){
     int nbChannels;
     if (read_image_data(source_path, &data, &width, &height, &nbChannels)) {
         int pixelIndex = (width * nbChannels);
- 
+
         if (pixelIndex < width * height * nbChannels) {
             printf("second_line: %d, %d, %d\n", data[pixelIndex], data[pixelIndex + 1], data[pixelIndex + 2]);
         } else {
@@ -72,7 +73,7 @@ void second_line(char *source_path){
         printf("ERROR");
     }
 }
- 
+
 void print_pixel(char *source_path, int x, int y){
     int width;
     int height;
@@ -90,4 +91,3 @@ void print_pixel(char *source_path, int x, int y){
         printf("ERROR");
     }
 }
- 
