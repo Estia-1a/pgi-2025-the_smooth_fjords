@@ -14,7 +14,7 @@
 void helloWorld() {
     printf("Hello World !");
 }
- 
+
 void dimension (char *source_path) {
     int width;
     int height;
@@ -28,7 +28,7 @@ void dimension (char *source_path) {
         printf("ERROR");
     }
 }
- 
+
 void first_pixel(char *source_path){
     unsigned char *data;
     int width;
@@ -41,7 +41,7 @@ void first_pixel(char *source_path){
         printf("ERROR");
     }
 }
- 
+
 void tenth_pixel(char *source_path){
     unsigned char *data;
     int width;
@@ -54,7 +54,7 @@ void tenth_pixel(char *source_path){
         printf("ERROR");
     }
 }
- 
+
 void second_line(char *source_path){
     unsigned char *data;
     int width;
@@ -62,7 +62,7 @@ void second_line(char *source_path){
     int nbChannels;
     if (read_image_data(source_path, &data, &width, &height, &nbChannels)) {
         int pixelIndex = (width * nbChannels);
- 
+
         if (pixelIndex < width * height * nbChannels) {
             printf("second_line: %d, %d, %d\n", data[pixelIndex], data[pixelIndex + 1], data[pixelIndex + 2]);
         } else {
@@ -73,7 +73,7 @@ void second_line(char *source_path){
         printf("ERROR");
     }
 }
- 
+
 void print_pixel(char *source_path, int x, int y){
     int width;
     int height;
