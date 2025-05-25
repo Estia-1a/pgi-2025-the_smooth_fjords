@@ -63,5 +63,9 @@ int main(int argc, char **argv) {
   max_pixel(configuration.filenames[0]); 
   }
 
+  if (strncmp(configuration.command, "min_composant", 12) == 0){
+    /* min_composant() function is defined in feature.h and implemented in feature.c */
+  min_composant(configuration.filenames[0], configuration.arguments[0][0]); 
+  }
   return 0;
 }
