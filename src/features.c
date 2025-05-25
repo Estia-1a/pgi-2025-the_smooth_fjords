@@ -1,6 +1,7 @@
 #include <estia-image.h>
 #include <stdio.h>
- 
+#include <stdlib.h>
+#include <stddef.h>
 #include "features.h"
 #include "utils.h"
  
@@ -90,4 +91,41 @@ void print_pixel(char *source_path, int x, int y){
     else {
         printf("ERROR");
     }
+}
+
+void max_pixel(char *source_path) {
+    int width;
+    int height;
+    int nbChannels;
+    unsigned char *data;
+
+    read_image_data(source_path, &data, &width, &height, &nbChannels);
+    int max_sum = 0;
+    int max_x = 0;
+    int max_y = 0;
+
+    int y, x;
+    for (y=0 ; y < height; y++) {
+        for (x=0; x<width; x++){
+            int pixel_index = (y*width + x) * nbChannels;
+            int R = data[pixel_index];
+            int G = data[pixel_index + 1];
+            int B = data[pixel_index +2];
+            int SUM = R+G+B;
+            if (SUM > max_sum){
+                max_sum = SUM;
+                max_x = x;
+                max_y = y;
+            }
+        }
+    }
+
+    int max_pixel_index = (max_y*width + max_x)* nbChannels;
+    int max_R = data[max_pixel_index];
+    int max_G = data[max_pixel_index+1];
+    int max_B = data[max_pixel_index+2];
+
+    printf("max_pixel (%d, %d): %d, %d, %d", max_x, max_y, max_R, max_G, max_B);
+
+    free(data);
 }

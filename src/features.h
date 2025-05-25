@@ -1,6 +1,6 @@
 #ifndef FEATURES_H
 #define FEATURES_H
- 
+#include "utils.h"
  
 void helloWorld();
 void dimension (char *source_path);
