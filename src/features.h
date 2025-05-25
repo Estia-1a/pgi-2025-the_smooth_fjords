@@ -12,7 +12,7 @@ void max_pixel (char *source_path);
 
 
 
-
+void min_composant (char *source_path, char component)
 
 
 
