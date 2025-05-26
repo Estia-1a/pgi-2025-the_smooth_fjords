@@ -230,4 +230,27 @@ void min_pixel(char *source_path){
     int min_x = 0;
     int min_y = 0;
 
-   
+    int y, x;
+    for (y=0 ; y < height; y++) {
+        for (x=0; x<width; x++){
+            int pixel_index = (y*width + x) * nbChannels;
+            int R = data[pixel_index];
+            int G = data[pixel_index + 1];
+            int B = data[pixel_index +2];
+            int SUM = R+G+B;
+            if (SUM > min_sum){
+                min_sum = SUM;
+                min_x = x;
+                min_y = y;
+            }
+        }
+    }
+
+    int min_pixel_index = (min_y*width + min_x)* nbChannels;
+    int min_R = data[min_pixel_index];
+    int min_G = data[min_pixel_index+1];
+    int min_B = data[min_pixel_index+2];
+
+    printf("min_pixel (%d, %d): %d, %d, %d", min_x, min_y, min_R, min_G, min_B);
+
+}  
