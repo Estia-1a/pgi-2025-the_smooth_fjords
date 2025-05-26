@@ -202,3 +202,19 @@ void max_component(char *source_path, char component) {
                     printf("Option de composante invalide.\n");
                     return;
                 }
+                if (component_value < min_component_value) {
+                    min_component_value = component_value;
+                    min_x = x;
+                    min_y = y;
+                }
+            }
+        }
+        int max_pixel_index = (min_y * width + min_x) * nbChannels;
+        int min_R = data[max_pixel_index];
+        int min_G = data[max_pixel_index + 1];
+        int min_B = data[max_pixel_index + 2];
+
+        printf("max_component %c (%d, %d): %d\n", component, min_x, min_y, min_component_value);
+    }
+
+}
