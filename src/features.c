@@ -254,3 +254,9 @@ void min_pixel(char *source_path){
     printf("min_pixel (%d, %d): %d, %d, %d", min_x, min_y, min_R, min_G, min_B);
 
 }  
+
+void color_red (char* source_path){
+    int width , height, nbChannels;
+    unsigned char *data;
+    read_image_data(source_path, &data, &width, &height, &nbChannels);
+}
