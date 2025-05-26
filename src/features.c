@@ -269,3 +269,9 @@ void color_red (char* source_path){
     }
     write_image_data("image_out.bmp", data, width, height);
 }
+
+void color_blue (char* source_path){
+    int width , height, nbChannels;
+    unsigned char *data;
+    read_image_data(source_path, &data, &width, &height, &nbChannels);
+    
