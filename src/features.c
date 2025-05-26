@@ -218,3 +218,16 @@ void max_component(char *source_path, char component) {
     }
 
 }
+
+void min_pixel(char *source_path){
+    int width;
+    int height;
+    int nbChannels;
+    unsigned char *data;
+
+    read_image_data(source_path, &data, &width, &height, &nbChannels);
+    int min_sum = 0;
+    int min_x = 0;
+    int min_y = 0;
+
+   
