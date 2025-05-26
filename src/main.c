@@ -79,5 +79,9 @@ int main(int argc, char **argv) {
     /* color_red() function is defined in feature.h and implemented in feature.c */
   color_red(configuration.filenames[0]); 
   }
+  if (strncmp(configuration.command, "color_blue", 8) == 0){
+    /* color_blue() function is defined in feature.h and implemented in feature.c */
+  color_blue(configuration.filenames[0]); 
+  }
   return 0;
 }
