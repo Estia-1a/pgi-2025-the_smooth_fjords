@@ -296,22 +296,27 @@ void color_green(char* source_path){
     } 
 
 void color_gray (char* source_path) {
-    int width, height, nbChannels;
+    int width;
+    int height;
+    int nbChannels;
     unsigned char*data;
     read_image_data(source_path, &data, &width, &height, &nbChannels);
 
     int y;
     int x;
     for (y = 0; y < height; y++){
-        for (x = 0; x < height; x++){
-            unsigned char red = data [y * width * 3 + x * 3];
-            unsigned char green = data [y * width * 3 + x * 3 + 1];
-            unsigned char blue = data [y * width * 3 + x * 3 + 2];
-            unsigned char gray = data [(red + green + blue)/3];
+        for (x = 0; x < width; x++){
+            int pixel_index = (y*width +x) * nbChannels;
 
-            data[y * width * 3 + x * 3] = gray;
-            data[y * width * 3 + x * 3 + 1] = gray;
-            data[y * width * 3 + x * 3 + 2] = gray;
+            unsigned char red = data [pixel_index];
+            unsigned char green = data [pixel_index + 1];
+            unsigned char blue = data [ pixel_index+ 2];
+
+            unsigned char gray = (red + green + blue)/3;
+
+            data[pixel_index] = gray;
+            data[pixel_index + 1] = gray;
+            data[pixel_index + 2] = gray;
         }
     }
     
