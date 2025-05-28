@@ -175,15 +175,18 @@ void min_component(char *source_path, char component) {
 }
 
 void max_component(char *source_path, char component) {
-    int width, height, nbChannels;
+    int width;
+    int height;
+    int nbChannels;
     unsigned char *data;
 
     if (read_image_data(source_path, &data, &width, &height, &nbChannels)) {
-        int min_component_value = 0;
-        int min_x = 0;
-        int min_y = 0;
+        int max_component_value = -1;
+        int max_x = 0;
+        int max_y = 0;
 
-        int y, x;
+        int y;
+        int x;
         for (y = 0; y < height; y++) {
             for (x = 0; x < width; x++) {
                 int pixel_index = (y * width + x) * nbChannels;
@@ -202,19 +205,15 @@ void max_component(char *source_path, char component) {
                     printf("Option de composante invalide.\n");
                     return;
                 }
-                if (component_value < min_component_value) {
-                    min_component_value = component_value;
-                    min_x = x;
-                    min_y = y;
+                if (component_value > max_component_value) {
+                    max_component_value = component_value;
+                    max_x = x;
+                    max_y = y;
                 }
             }
         }
-        int max_pixel_index = (min_y * width + min_x) * nbChannels;
-        int min_R = data[max_pixel_index];
-        int min_G = data[max_pixel_index + 1];
-        int min_B = data[max_pixel_index + 2];
 
-        printf("max_component %c (%d, %d): %d\n", component, min_x, min_y, min_component_value);
+        printf("max_component %c (%d, %d): %d\n", component, max_x, max_y, max_component_value);
     }
 
 }
