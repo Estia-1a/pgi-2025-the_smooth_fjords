@@ -296,7 +296,7 @@ void color_gray (char* source_path) {
             unsigned char red = data [y * width * 3 + x * 3];
             unsigned char green = data [y * width * 3 + x * 3 + 1];
             unsigned char blue = data [y * width * 3 + x * 3 + 2];
-            unsigned char gray = data (red + green + blue)/3;
+            unsigned char gray = data [(red + green + blue)/3];
 
             data[y * width * 3 + x * 3] = gray;
             data[y * width * 3 + x * 3 + 1] = gray;
@@ -304,5 +304,5 @@ void color_gray (char* source_path) {
         }
     }
 
-    write_image_data("image_out.bpm", data, width, height)
+    write_image_data("image_out.bpm", data, width, height);
 }
