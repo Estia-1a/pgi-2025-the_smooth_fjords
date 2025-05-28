@@ -226,19 +226,20 @@ void min_pixel(char *source_path){
     unsigned char *data;
 
     read_image_data(source_path, &data, &width, &height, &nbChannels);
-    int min_sum = 0;
+    int min_sum = INT_MAX;
     int min_x = 0;
     int min_y = 0;
 
     int y, x;
-    for (y=0 ; y < height; y++) {
-        for (x=0; x<width; x++){
-            int pixel_index = (y*width + x) * nbChannels;
+    for (y = 0 ; y < height; y++) {
+        for (x = 0; x<width; x++){
+            int pixel_index = (y * width + x) * nbChannels;
             int R = data[pixel_index];
             int G = data[pixel_index + 1];
             int B = data[pixel_index +2];
-            int SUM = R+G+B;
-            if (SUM > min_sum){
+            int SUM = R + G + B;
+
+            if (SUM < min_sum){
                 min_sum = SUM;
                 min_x = x;
                 min_y = y;
