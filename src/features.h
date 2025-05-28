@@ -15,7 +15,6 @@ void min_composant (char *source_path, char component);
 void color_red (char *source_path);
 void color_blue (char *source_path);
 void color_green (char* source_path);
-
 void color_gray(char* source_path);
 
 
