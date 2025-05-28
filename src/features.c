@@ -281,19 +281,19 @@ void color_blue (char* source_path){
 }
 
 void color_green(char* source_path){
-        int width, height, nbChannels;
-        unsigned char *data;
-        read_image_data(source_path, &data, &width, &height, &nbChannels);
-        int y;
-        int x;
-        for (y = 0; y < height; y++){
-            for (x=0; x < width; x++){
-            data[y*width*3 + x*3] = 0;
-            data[y*width*3 + x*3+2] = 0;
+    int width, height, nbChannels;
+    unsigned char *data;
+    read_image_data(source_path, &data, &width, &height, &nbChannels);
+    int y;
+    int x;
+    for (y = 0; y < height; y++){
+        for (x=0; x < width; x++){
+        data[y*width*3 + x*3] = 0;
+        data[y*width*3 + x*3+2] = 0;
         }
-        }
-        write_image_data("image_out.bmp", data, width, height);
-    } 
+    }
+    write_image_data("image_out.bmp", data, width, height);
+} 
 
 void color_gray (char* source_path) {
     int width;
@@ -306,7 +306,7 @@ void color_gray (char* source_path) {
     int x;
     for (y = 0; y < height; y++){
         for (x = 0; x < width; x++){
-            int pixel_index = (y*width +x) * nbChannels;
+            int pixel_index = (y*width +x) * 3;
 
             unsigned char red = data [pixel_index];
             unsigned char green = data [pixel_index + 1];
@@ -319,6 +319,4 @@ void color_gray (char* source_path) {
             data[pixel_index + 2] = gray;
         }
     }
-    
-    write_image_data("image_out.bpm", data, width, height);
 }
