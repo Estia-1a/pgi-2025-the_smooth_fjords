@@ -164,11 +164,6 @@ void min_component(char *source_path, char component) {
                 }
             }
         }
-        int min_pixel_index = (min_y * width + min_x) * nbChannels;
-        int min_R = data[min_pixel_index];
-        int min_G = data[min_pixel_index + 1];
-        int min_B = data[min_pixel_index + 2];
-
         printf("min_component %c (%d, %d): %d\n", component, min_x, min_y, min_component_value);
     }
 
