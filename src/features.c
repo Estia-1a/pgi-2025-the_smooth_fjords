@@ -305,7 +305,8 @@ void color_gray (char* source_path) {
     unsigned char*data;
     read_image_data(source_path, &data, &width, &height, &nbChannels);
 
-    int y,x;
+    int y;
+    int x;
     for (y = 0; y < height; y++){
         for (x = 0; x < height; x++){
             unsigned char red = data [y * width * 3 + x * 3];
@@ -318,6 +319,6 @@ void color_gray (char* source_path) {
             data[y * width * 3 + x * 3 + 2] = gray;
         }
     }
-
+    
     write_image_data("image_out.bpm", data, width, height);
 }
