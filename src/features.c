@@ -360,3 +360,15 @@ void mirror_horizontal(char* source_path) {
     read_image_data(source_path, &data, &width, &nbChannels);
     int y, x, c;
     unsigned char temp;
+    for (y = 0; y < height; y++){
+        for (x = 0; x < width/2; x++){
+            for (c = 0; c < nbChannels; c++){
+                temp = data[y*width*nbChannels + x * nbChannels + c];
+                data[y * width * nbChannels + x * nbChannels + c] = data[y * width * nbChannels + (width - x - 1)*nbChannels + c];
+                data[y * width * nbChannels + (width - x- 1) * nbChannels + c] = temp;
+            }
+        }
+    }
+    write_image_data("image_out.bpm", data, width, height);
+    free(data);
+}
