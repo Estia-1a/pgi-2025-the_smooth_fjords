@@ -337,7 +337,19 @@ void rotate_cw(char* source_path) {
             for (x = 0; x < width; x++){
                 int source_pixel_index = (y * width + x) * nbChannels;
                 int target_pixel_index = ((x * target_width) + (target_width - 1 - y)) * nbChannels;
+
+                target_data[target_pixel_index] = source_data[source_pixel_index];
+                target_data[target_pixel_index + 1] = source_data[source_pixel_index + 1];
+                target_data[target_pixel_index + 2] = source_data[source_pixel_index + 2];
+
+                if (nbChannels == 4){
+                    target_data[target_pixel_index +3] = source_data[source_pixel_index + 3];
+                }
             }
         }
+        write_image_data("image_out.bpm", target_data, target_width, target_height);
+
+        free(source_data);
+        free(target_data);
     }
 }
