@@ -353,3 +353,10 @@ void rotate_cw(char* source_path) {
         free(target_data);
     }
 }
+
+void mirror_horizontal(char* source_path) {
+    int width, height, nbChannels;
+    unsigned char *data;
+    read_image_data(source_path, &data, &width, &nbChannels);
+    int y, x, c;
+    unsigned char temp;
