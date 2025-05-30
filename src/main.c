@@ -103,5 +103,8 @@ int main(int argc, char **argv) {
     /* mirror_vertical() function is defined in feature.h and implemented in feature.c */
   mirror_vertical(configuration.filenames[0]); 
   }
+  if (strncmp(configuration.command, "rotate_acw", 10) == 0) {
+    rotate_acw(configuration.filenames[0]);
+    }
   return 0;
 }
