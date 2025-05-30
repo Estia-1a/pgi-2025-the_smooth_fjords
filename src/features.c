@@ -372,3 +372,11 @@ void mirror_horizontal(char* source_path) {
     write_image_data("image_out.bpm", data, width, height);
     free(data);
 }
+
+void rotate_acw(char* source_path) {
+    int width, height, nbChannels;
+    unsigned char* source_data;
+    unsigned char* target_data;
+ 
+    if (read_image_data(source_path, &source_data, &width, &height, &nbChannels)) {
+        target_data = (unsigned char*)malloc(width * height * nbChannels * sizeof(unsigned char));
