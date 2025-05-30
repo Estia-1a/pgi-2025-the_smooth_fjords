@@ -431,3 +431,9 @@ void rotate_cw(char *source_path) {
                 }
             }
         }
+        write_image_data("image_out.bmp", target_data, target_width, target_height);
+
+        free(source_data);
+        free(target_data);
+    }
+}
