@@ -404,3 +404,15 @@ void rotate_acw(char* source_path) {
         free(target_data);
     }
 }
+
+void rotate_cw(char *source_path) {
+    int width, height, nbChannels;
+    unsigned char *source_data;
+    unsigned char *target_data;
+
+    if (read_image_data(source_path, &source_data, &width, &height, &nbChannels)) {
+        target_data = (unsigned char *)malloc(width * height * nbChannels * sizeof(unsigned char));
+
+        int target_width = height;
+        int target_height = width;
+
