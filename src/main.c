@@ -91,22 +91,24 @@ int main(int argc, char **argv) {
     /* color_gray() function is defined in feature.h and implemented in feature.c */
   color_gray(configuration.filenames[0]); 
   }
-    if (strncmp(configuration.command, "rotate_cw", 9) == 0){
+  if (strncmp(configuration.command, "rotate_cw", 9) == 0){
     /* rotate_cw() function is defined in feature.h and implemented in feature.c */
   rotate_cw(configuration.filenames[0]); 
   }
-      if (strncmp(configuration.command, "mirror_horizontal", 17) == 0){
+    if (strncmp(configuration.command, "mirror_horizontal", 17) == 0){
     /* mirror_horizontal() function is defined in feature.h and implemented in feature.c */
   mirror_horizontal(configuration.filenames[0]); 
   }
-        if (strncmp(configuration.command, "mirror_vertical", 15) == 0){
+  if (strncmp(configuration.command, "mirror_vertical", 15) == 0){
     /* mirror_vertical() function is defined in feature.h and implemented in feature.c */
   mirror_vertical(configuration.filenames[0]); 
   }
   if (strncmp(configuration.command, "rotate_acw", 10) == 0) {
+    /* rotate_acw() function is defined in feature.h and implemented in feature.c */
     rotate_acw(configuration.filenames[0]);
     }
   if (strncmp(configuration.command, "rotate_cw", 9) == 0) {
+    /* rotate_cw() function is defined in feature.h and implemented in feature.c */
   rotate_acw(configuration.filenames[0]);
   }
   return 0;
