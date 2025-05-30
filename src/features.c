@@ -380,3 +380,14 @@ void rotate_acw(char* source_path) {
  
     if (read_image_data(source_path, &source_data, &width, &height, &nbChannels)) {
         target_data = (unsigned char*)malloc(width * height * nbChannels * sizeof(unsigned char));
+        int target_width = height;
+        int target_height = width;
+ 
+        int y, x;
+        for (y = 0; y < height; y++) {
+            for (x = 0; x < width; x++) {
+                int source_pixel_index = (y * width + x) * nbChannels;
+                int target_pixel_index = ((target_height - 1 - x) * target_width + y) * nbChannels;
+ 
+                target_data[target_pixel_index] = source_data[source_pixel_index];
+                target_data[target_pixel_index + 1] = source_data[source_pixel_index + 1];
