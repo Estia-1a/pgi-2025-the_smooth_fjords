@@ -99,5 +99,9 @@ int main(int argc, char **argv) {
     /* mirror_horizontal() function is defined in feature.h and implemented in feature.c */
   mirror_horizontal(configuration.filenames[0]); 
   }
+        if (strncmp(configuration.command, "mirror_vertical", 9) == 0){
+    /* mirror_vertical() function is defined in feature.h and implemented in feature.c */
+  mirror_vertical(configuration.filenames[0]); 
+  }
   return 0;
 }

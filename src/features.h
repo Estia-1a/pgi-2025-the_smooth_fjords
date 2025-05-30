@@ -18,6 +18,7 @@ void color_green (char* source_path);
 void color_gray(char* source_path);
 void rotate_cw(char *source_path);
 void mirror_horizontal(char *source_path);
+void mirror_vertical(char *source_path);
 
 
 
