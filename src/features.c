@@ -373,6 +373,27 @@ void mirror_horizontal(char* source_path) {
     free(data);
 }
 
+void mirror_vertical(char *source_path){
+    int width, height, nbChannels;
+    unsigned char *data;
+    read_image_data(source_path, &data, &width, &height, &nbChannels);
+
+    int y, x, c;
+    unsigned char temp;
+    for(y = 0; y < height/2; y++){
+        for (x = 0; x < width; x++){
+            for (c = 0; c < nbChannels; c++){
+                temp = data[y * width * nbChannels + x * nbChannels + c];
+                data[y * width * nbChannels + x * nbChannels + c] = data[(height - y - 1) * width * nbChannels + x *nbChannels + c];
+                data [(height - y - 1) * width * nbChannels + x * nbChannels + c] = temp;
+            }
+        }
+    }
+
+    write_image_data("image_out.bmp", data, width, height);
+    free(data);
+}
+
 void rotate_acw(char* source_path) {
     int width, height, nbChannels;
     unsigned char* source_data;
@@ -403,4 +424,36 @@ void rotate_acw(char* source_path) {
         free(source_data);
         free(target_data);
     }
+}
+
+void mirror_total(char* source_path) {
+    int width, height, nbChannels;
+    unsigned char *data;
+    read_image_data(source_path, &data, &width, &height, &nbChannels);
+
+    int y, x, c;
+    unsigned char temp;
+
+    for (y = 0; y < height; y++){
+        for (x = 0; x < width/2; x++){
+            for (c = 0; c < nbChannels; c++){
+                temp = data[y*width*nbChannels + x*nbChannels + c];
+                data[y*width*nbChannels + x*nbChannels + c] = data[y*width*nbChannels + (width -x - 1)*nbChannels + c];
+                data[y*width*nbChannels + (width - x - 1)*nbChannels + c] = temp;
+            }
+        }
+    }
+
+    for (y = 0; y < height/2; y++){
+        for (x = 0; x < width; x++){
+            for (c = 0; c < nbChannels; c++){
+                temp = data[y * width * nbChannels + x * nbChannels + c];
+                data[y * width * nbChannels + x * nbChannels + c] = data[(height - y - 1) * width * nbChannels + x * nbChannels + c];
+                data[(height - y - 1) * width * nbChannels + x * nbChannels + c] = temp;
+            }
+        }
+    }
+
+    write_image_data("image_out.bmp", data, width, height);
+    free(data);
 }

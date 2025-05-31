@@ -107,7 +107,6 @@ int main(int argc, char **argv) {
     /* rotate_acw() function is defined in feature.h and implemented in feature.c */
     rotate_acw(configuration.filenames[0]);
     }
-
   return 0;
 }
 
