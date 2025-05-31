@@ -484,3 +484,39 @@ void color_gray_luminance(char* source_path) {
     }
     write_image_data("image_out.bmp", data, width, height);
 }
+
+void color_desaturate(char *source_path) {
+    int width, height, channel_count;
+    unsigned char *data;
+    read_image_data(source_path, &data, &width, &height, &channel_count);
+    unsigned char *new_data = (unsigned char *)malloc(width * height * channel_count * sizeof(unsigned char));
+    if (new_data == NULL) {
+        printf("pas de sortie.\n");
+        return;
+    }
+    int i = 0;
+    while (i < width * height) {
+        pixelRGB *pixel = (pixelRGB *)(data + i * channel_count);
+        unsigned char min_value = pixel->R;
+        if (pixel->G < min_value) {
+            min_value = pixel->G;
+        }
+        if (pixel->B < min_value) {
+            min_value = pixel->B;
+        }
+        unsigned char max_value = pixel->R;
+        if (pixel->G > max_value) {
+            max_value = pixel->G;
+        }
+        if (pixel->B > max_value) {
+            max_value = pixel->B;
+        }
+        unsigned char new_value = (min_value + max_value) / 2;
+        new_data[i * channel_count] = new_value;
+        new_data[i * channel_count + 1] = new_value;
+        new_data[i * channel_count + 2] = new_value;
+        i++;
+    }
+    write_image_data("image_out.bmp", new_data, width, height);
+    
+}
