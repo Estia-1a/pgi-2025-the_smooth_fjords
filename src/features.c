@@ -299,25 +299,31 @@ void color_gray (char* source_path) {
     int width;
     int height;
     int nbChannels;
-    unsigned char*data;
-    read_image_data(source_path, &data, &width, &height, &nbChannels);
+    unsigned char*source_data;
+    unsigned char*target_data;
+    if(read_image_data(source_path, &source_data, &width, &height, &nbChannels)) {
+        target_data = (unsigned char *)malloc(width * height *nbChannels *sizeof(unsigned char));
+        int y, x;
+        for (y = 0; y < height; y++){
+            for (x = 0; x< width; x++){
 
-    int y;
-    int x;
-    for (y = 0; y < height; y++){
-        for (x = 0; x < width; x++){
-            int pixel_index = (y*width +x) * 3;
+            int pixel_index = (y*width +x) * nbChannels;
 
-            unsigned char red = data [pixel_index];
-            unsigned char green = data [pixel_index + 1];
-            unsigned char blue = data [ pixel_index+ 2];
+            unsigned char red = source_data [pixel_index];
+            unsigned char green = source_data [pixel_index + 1];
+            unsigned char blue = source_data [ pixel_index+ 2];
 
-            unsigned char gray = (red + green + blue)/3;
+            unsigned char gray = (red + green + blue) / 3;
 
-            data[pixel_index] = gray;
-            data[pixel_index + 1] = gray;
-            data[pixel_index + 2] = gray;
+            source_data[pixel_index] = gray;
+            source_data[pixel_index + 1] = gray;
+            source_data[pixel_index + 2] = gray;
+            
+            }
         }
+
+        write_image_data("image_out.bmp", target_data, width, height);
+        free(source_data);
     }
 }
 
