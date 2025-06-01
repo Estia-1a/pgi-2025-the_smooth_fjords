@@ -524,3 +524,9 @@ void color_invert(char* source_path) {
     int width, height, nbChannels;
     unsigned char *data;
     read_image_data(source_path, &data, &width, &height, &nbChannels);
+    int y, x;
+    for (y = 0; y < height; y++) {
+        for (x = 0; x < width; x++) {
+            unsigned char red = data[y * width * 3 + x * 3];
+            unsigned char green = data[y * width * 3 + x * 3 + 1];
+            unsigned char blue = data[y * width * 3 + x * 3 + 2];
