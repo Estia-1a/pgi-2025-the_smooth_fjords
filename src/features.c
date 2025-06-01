@@ -518,5 +518,9 @@ void color_desaturate(char *source_path) {
         i++;
     }
     write_image_data("image_out.bmp", new_data, width, height);
-    
 }
+
+void color_invert(char* source_path) {
+    int width, height, nbChannels;
+    unsigned char *data;
+    read_image_data(source_path, &data, &width, &height, &nbChannels);
