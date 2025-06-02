@@ -553,7 +553,7 @@ void scale_crop(char*source_path, int center_x, int center_y, int crop_width, in
         for (y = 0; y < crop_height; y++){
             for (x = 0; x < crop_width; x ++){
                 int src_x = start_x + x;
-                int src_y start_y + y;
+                int src_y = start_y + y;
                 int target_pixel_index = (y * crop_width + x)* nbChannels;
 
                 if (src_x > = 0 && src_x < width && src_y > = 0 && src_y < height){
