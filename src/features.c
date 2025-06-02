@@ -535,7 +535,6 @@ void color_invert(char* source_path) {
             data[y * width * 3 + x * 3 + 2] = 255 - blue;   // Invert blue component
     }
 }
- 
     write_image_data("image_out.bmp", data, width, height);
     free(data);
 }
