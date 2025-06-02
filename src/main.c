@@ -119,6 +119,15 @@ int main(int argc, char **argv) {
     /* color_invert() function is defined in feature.h and implemented in feature.c */
      color_invert(configuration.filenames[0]);
   }
+  if (strncmp(configuration.command, "scale_crop", 10) == 0){
+    /*scale_crop()function is defined in features.h and implemented in features.c*/
+    scale_crop(configuration.filenames[0], configuration.params[0], configuration.params[1], configuration.params[2], configuration.params[3]);
+  }
+  if (strncmp(configuration.command, "scale_bilinear", 14) == 0){
+    /* scale _bilinear() function is defined in feature.h and implemented in feature.c*/
+    float scale = atof(configuration.params[0]);
+    scale_bilinear(configuration.filenames[0], scale);
+  }
   return 0;
 }
 
