@@ -25,6 +25,7 @@ void color_gray_luminance(char* source_path);
 void color_desaturate(char* source_path);
 void color_invert(char* source_path);
 void scale_crop(char* source_path);
+void scale_bilinear(char*source_path, float scale);
 
 
 
