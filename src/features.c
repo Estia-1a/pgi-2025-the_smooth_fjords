@@ -550,7 +550,7 @@ void scale_crop(char*source_path, int center_x, int center_y, int crop_width, in
         int start_x = center_x - crop_width / 2;
         int start_y = center_y - crop_height /2;
         int y, x;
-        for (y = 0, y < crop_height; y++){
+        for (y = 0; y < crop_height; y++){
             for (x = 0; x < crop_width; x ++){
                 int src_x = start_x + x;
                 int src_y start_y + y;
