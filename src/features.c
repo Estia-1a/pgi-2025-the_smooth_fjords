@@ -383,7 +383,7 @@ void mirror_vertical(char *source_path){
     int width, height, nbChannels;
     unsigned char *data;
     read_image_data(source_path, &data, &width, &height, &nbChannels);
-    
+
     int y, x, c;
     unsigned char temp;
     for(y = 0; y < height/2; y++){
@@ -575,6 +575,7 @@ void scale_crop(char*source_path, int center_x, int center_y, int crop_width, in
                 }
             }
         }
+
     write_image_data("image_out.bmp", target_data, target_width, target_height);
     free(source_data);
     free(target_data);
