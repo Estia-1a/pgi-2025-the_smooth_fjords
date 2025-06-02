@@ -569,7 +569,7 @@ void scale_crop(char*source_path, int center_x, int center_y, int crop_width, in
                     target_data[target_pixel_index] = 0;
                     target_data[target_pixel_index + 1] = 0;
                     target_data[target_pixel_index + 2] = 0;
-                    if (nbChannels = = 4){
+                    if (nbChannels == 4){
                         target_data[target_pixel_index + 3] = 255;
                     }
                 }
