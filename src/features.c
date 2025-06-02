@@ -545,6 +545,14 @@ void scale_crop(char*source_path, int center_x, int center_y, int crop_width, in
     unsigned char*source_data;
     unsigned char*target_data;
     if (read_image_data(source_path, &source_data, &width, &height, &nbChannels)){
-        
+        target_data = (unsigned char*)malloc(crop_width * crop_height * nbChannels * sizeof(unsigned char));
+        int target_width = crop_width;
+        int target_height = crop_height;
+        int start_x = center_x - crop_width / 2;
+        int start_y = center_y - crop_height /2;
+        int y, x;
+        for (y = 0, y < crop_height; y++){
+            
+        }
     }
 }
