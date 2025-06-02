@@ -1,0 +1,67 @@
+/home/runner/work/pgi-2025-the_smooth_fjords/pgi-2025-the_smooth_fjords/src/features.c: In function ‘min_pixel’:
+/home/runner/work/pgi-2025-the_smooth_fjords/pgi-2025-the_smooth_fjords/src/features.c:223:19: error: ‘INT_MAX’ undeclared (first use in this function)
+  223 |     int min_sum = INT_MAX;
+      |                   ^~~~~~~
+/home/runner/work/pgi-2025-the_smooth_fjords/pgi-2025-the_smooth_fjords/src/features.c:6:1: note: ‘INT_MAX’ is defined in header ‘<limits.h>’; did you forget to ‘#include <limits.h>’?
+    5 | #include "features.h"
+  +++ |+#include <limits.h>
+    6 | #include "utils.h"
+/home/runner/work/pgi-2025-the_smooth_fjords/pgi-2025-the_smooth_fjords/src/features.c:223:19: note: each undeclared identifier is reported only once for each function it appears in
+  223 |     int min_sum = INT_MAX;
+      |                   ^~~~~~~
+/home/runner/work/pgi-2025-the_smooth_fjords/pgi-2025-the_smooth_fjords/src/main.c: In function ‘main’:
+/home/runner/work/pgi-2025-the_smooth_fjords/pgi-2025-the_smooth_fjords/src/features.c: At top level:
+/home/runner/work/pgi-2025-the_smooth_fjords/pgi-2025-the_smooth_fjords/src/main.c:124:57: error: ‘Config’ {aka ‘struct _config’} has no member named ‘params’
+  124 |     scale_crop(configuration.filenames[0], configuration.params[0], configuration.params[1], configuration.params[2], configuration.params[3]);
+      |                                                         ^
+/home/runner/work/pgi-2025-the_smooth_fjords/pgi-2025-the_smooth_fjords/src/features.c:543:6: error: conflicting types for ‘scale_crop’; have ‘void(char *, int,  int,  int,  int)’
+  543 | void scale_crop(char*source_path, int center_x, int center_y, int crop_width, int crop_height){
+      |      ^~~~~~~~~~
+/home/runner/work/pgi-2025-the_smooth_fjords/pgi-2025-the_smooth_fjords/src/main.c:124:82: error: ‘Config’ {aka ‘struct _config’} has no member named ‘params’
+  124 |     scale_crop(configuration.filenames[0], configuration.params[0], configuration.params[1], configuration.params[2], configuration.params[3]);
+      |                                                                                  ^
+/home/runner/work/pgi-2025-the_smooth_fjords/pgi-2025-the_smooth_fjords/src/main.c:124:107: error: ‘Config’ {aka ‘struct _config’} has no member named ‘params’
+  124 |     scale_crop(configuration.filenames[0], configuration.params[0], configuration.params[1], configuration.params[2], configuration.params[3]);
+      |                                                                                                           ^
+/home/runner/work/pgi-2025-the_smooth_fjords/pgi-2025-the_smooth_fjords/src/main.c:124:132: error: ‘Config’ {aka ‘struct _config’} has no member named ‘params’
+  124 |     scale_crop(configuration.filenames[0], configuration.params[0], configuration.params[1], configuration.params[2], configuration.params[3]);
+      |                                                                                                                                    ^
+In file included from /home/runner/work/pgi-2025-the_smooth_fjords/pgi-2025-the_smooth_fjords/src/features.c:5:
+/home/runner/work/pgi-2025-the_smooth_fjords/pgi-2025-the_smooth_fjords/src/features.h:27:6: note: previous declaration of ‘scale_crop’ with type ‘void(char *)’
+   27 | void scale_crop(char* source_path);
+      |      ^~~~~~~~~~
+/home/runner/work/pgi-2025-the_smooth_fjords/pgi-2025-the_smooth_fjords/src/features.c: In function ‘scale_crop’:
+/home/runner/work/pgi-2025-the_smooth_fjords/pgi-2025-the_smooth_fjords/src/main.c:124:5: error: too many arguments to function ‘scale_crop’
+  124 |     scale_crop(configuration.filenames[0], configuration.params[0], configuration.params[1], configuration.params[2], configuration.params[3]);
+      |     ^~~~~~~~~~
+/home/runner/work/pgi-2025-the_smooth_fjords/pgi-2025-the_smooth_fjords/src/features.c:554:41: error: expected ‘;’ before ‘)’ token
+  554 |         for (y = 0, y < crop_height; y++){
+      |                                         ^
+      |                                         ;
+In file included from /home/runner/work/pgi-2025-the_smooth_fjords/pgi-2025-the_smooth_fjords/src/main.c:8:
+/home/runner/work/pgi-2025-the_smooth_fjords/pgi-2025-the_smooth_fjords/src/features.h:27:6: note: declared here
+   27 | void scale_crop(char* source_path);
+      |      ^~~~~~~~~~
+/home/runner/work/pgi-2025-the_smooth_fjords/pgi-2025-the_smooth_fjords/src/features.c:557:27: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘start_y’
+  557 |                 int src_y start_y + y;
+      |                           ^~~~~~~
+/home/runner/work/pgi-2025-the_smooth_fjords/pgi-2025-the_smooth_fjords/src/main.c:128:37: error: ‘Config’ {aka ‘struct _config’} has no member named ‘params’
+  128 |     float scale = atof(configuration.params[0]);
+      |                                     ^
+/home/runner/work/pgi-2025-the_smooth_fjords/pgi-2025-the_smooth_fjords/src/features.c:560:29: error: expected expression before ‘=’ token
+  560 |                 if (src_x > = 0 && src_x < width && src_y > = 0 && src_y < height){
+      |                             ^
+/home/runner/work/pgi-2025-the_smooth_fjords/pgi-2025-the_smooth_fjords/src/features.c:561:47: error: ‘src_y’ undeclared (first use in this function); did you mean ‘src_x’?
+  561 |                     int source_pixel_index = (src_y * width + src_x) * nbChannels;
+      |                                               ^~~~~
+      |                                               src_x
+/home/runner/work/pgi-2025-the_smooth_fjords/pgi-2025-the_smooth_fjords/src/features.c:573:38: error: expected expression before ‘=’ token
+  573 |                     if (nbChannels = = 4){
+      |                                      ^
+gmake[2]: *** [CMakeFiles/freud.dir/build.make:107: CMakeFiles/freud.dir/src/main.c.o] Error 1
+gmake[2]: *** Waiting for unfinished jobs....
+gmake[2]: *** [CMakeFiles/freud.dir/build.make:93: CMakeFiles/freud.dir/src/features.c.o] Error 1
+gmake[1]: *** [CMakeFiles/Makefile2:87: CMakeFiles/freud.dir/all] Error 2
+gmake: *** [Makefile:136: all] Error 2
+
+The process '/usr/local/bin/cmake' failed with exit code 2
