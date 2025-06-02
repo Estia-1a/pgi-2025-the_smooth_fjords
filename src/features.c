@@ -539,3 +539,12 @@ void color_invert(char* source_path) {
     write_image_data("image_out.bmp", data, width, height);
     free(data);
 }
+
+void scale_crop(char*source_path, int center_x, int center_y, int crop_width, int crop_height){
+    int width, height, nbChannels;
+    unsigned char*source_data;
+    unsigned char*target_data;
+    if (read_image_data(source_path, &source_data, &width, &height, &nbChannels)){
+        
+    }
+}
