@@ -561,6 +561,18 @@ void scale_crop(char*source_path, int center_x, int center_y, int crop_width, in
                     int source_pixel_index = (src_y * width + src_x) * nbChannels;
                     target_data[target_pixel_index] = source_data[source_pixel_index];
                     target_data[target_pixel_index + 1] = source_data[source_pixel_index + 1];
+                    target_data[target_pixel_index + 2] = source_data[source_pixel_index + 2];
+                    if(nbChannels == 4){
+                        target_data[target_pixel_index + 3 ] = source_data[source_pixel_index + 3];
+                    }
+                }
+                else {
+                    target_data[target_pixel_index] = 0;
+                    target_data[target_pixel_index + 1] = 0;
+                    target_data[target_pixel_index + 2] = 0;
+                    if (nbChannels = = 4){
+                        
+                    }
                 }
             }
         }
