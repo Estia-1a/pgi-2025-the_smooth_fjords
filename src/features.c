@@ -627,3 +627,16 @@ void scale_bilinear(char*source_path, float scale){
         free(target_data);
     }
 }
+
+void scale_nearest(char*source_path, float scale){
+    int width;
+    int height;
+    int nbChannels;
+    unsigned char*source_data;
+    unsigned char*target_data;
+
+    if (read_image_data(source_path, &source_data, &width, &height, &nbChannels)){
+        int target_width = (int)(width*scale);
+        int target_height = (int)(height*scale);
+    }
+}
