@@ -581,3 +581,12 @@ void scale_crop(char*source_path, int center_x, int center_y, int crop_width, in
     free(target_data);
     }
 }
+
+void scale_bilinear(char*source_path, float scale){
+    int width, height, nbChannels;
+    unsigned char*source_data;
+    unsigned char*target_data;
+    if read_image_data(source_path, &source_data, & width, &height, & nbChannels)){
+        int target_width = (int)(width*scale);
+    }
+}
