@@ -535,7 +535,6 @@ void color_invert(char* source_path) {
             data[y * width * 3 + x * 3 + 2] = 255 - blue;   // Invert blue component
     }
 }
- 
     write_image_data("image_out.bmp", data, width, height);
     free(data);
 }
@@ -551,13 +550,13 @@ void scale_crop(char*source_path, int center_x, int center_y, int crop_width, in
         int start_x = center_x - crop_width / 2;
         int start_y = center_y - crop_height /2;
         int y, x;
-        for (y = 0, y < crop_height; y++){
+        for (y = 0; y < crop_height; y++){
             for (x = 0; x < crop_width; x ++){
                 int src_x = start_x + x;
-                int src_y start_y + y;
+                int src_y = start_y + y;
                 int target_pixel_index = (y * crop_width + x)* nbChannels;
 
-                if (src_x > = 0 && src_x < width && src_y > = 0 && src_y < height){
+                if (src_x >= 0 && src_x < width && src_y >= 0 && src_y < height){
                     int source_pixel_index = (src_y * width + src_x) * nbChannels;
                     target_data[target_pixel_index] = source_data[source_pixel_index];
                     target_data[target_pixel_index + 1] = source_data[source_pixel_index + 1];
@@ -570,12 +569,13 @@ void scale_crop(char*source_path, int center_x, int center_y, int crop_width, in
                     target_data[target_pixel_index] = 0;
                     target_data[target_pixel_index + 1] = 0;
                     target_data[target_pixel_index + 2] = 0;
-                    if (nbChannels = = 4){
+                    if (nbChannels == 4){
                         target_data[target_pixel_index + 3] = 255;
                     }
                 }
             }
         }
+
     write_image_data("image_out.bmp", target_data, target_width, target_height);
     free(source_data);
     free(target_data);
