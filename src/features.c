@@ -490,10 +490,12 @@ void color_desaturate(char *source_path) {
     unsigned char *data;
     read_image_data(source_path, &data, &width, &height, &channel_count);
     unsigned char *new_data = (unsigned char *)malloc(width * height * channel_count * sizeof(unsigned char));
+    
     if (new_data == NULL) {
         printf("pas de sortie.\n");
         return;
     }
+    
     int i = 0;
     while (i < width * height) {
         pixelRGB *pixel = (pixelRGB *)(data + i * channel_count);
@@ -543,6 +545,7 @@ void scale_crop(char*source_path, int center_x, int center_y, int crop_width, in
     int width, height, nbChannels;
     unsigned char*source_data;
     unsigned char*target_data;
+
     if (read_image_data(source_path, &source_data, &width, &height, &nbChannels)){
         target_data = (unsigned char*)malloc(crop_width * crop_height * nbChannels * sizeof(unsigned char));
         int target_width = crop_width;
@@ -550,6 +553,7 @@ void scale_crop(char*source_path, int center_x, int center_y, int crop_width, in
         int start_x = center_x - crop_width / 2;
         int start_y = center_y - crop_height /2;
         int y, x;
+        
         for (y = 0; y < crop_height; y++){
             for (x = 0; x < crop_width; x ++){
                 int src_x = start_x + x;
@@ -588,5 +592,16 @@ void scale_bilinear(char*source_path, float scale){
     unsigned char*target_data;
     if read_image_data(source_path, &source_data, & width, &height, & nbChannels)){
         int target_width = (int)(width*scale);
+        int target_heght= (int)(height*scale);
+        target_data = (unsigned char*)malloc(target_width*target_height*nbChannels*sizeof(unsigned char));
+
+        int y,x channel;
+        for (y = 0; y < target_height; y++){
+            for (x = 0; x < target_width; x ++){
+                float source_x = (float)x / scale;
+                float source_y = (float)y / scale;
+                
+            }
+        }
     }
 }
