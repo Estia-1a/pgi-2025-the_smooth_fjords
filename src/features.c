@@ -638,5 +638,24 @@ void scale_nearest(char*source_path, float scale){
     if (read_image_data(source_path, &source_data, &width, &height, &nbChannels)){
         int target_width = (int)(width*scale);
         int target_height = (int)(height*scale);
+        target_data = (unsigned char*)malloc(target_width*target_height*nbChannels*sizeof(unsigned char));
+
+        int y,x;
+        for (y = 0; y < target_height; x ++){
+            for (y = 0; y < target_width; x ++){
+                int src_x = (int)((float)x / scale);
+                int src_y = (int)((float)y / scale);
+                
+                if (src_x >= width) src_x = width -1;
+                if (src_y >= width) src_y = width -1;
+
+                int target_pixel_index = (y*target_width + x)*nbChannels;
+                int source_pixel_index = (src_y*width + src_x)*nbChannels;
+
+                target_data[target_pixel_index] = source_data[source_pixel_index];
+                target_data[target_pixel_index + 1] = source_data[source_pixel_index + 1];
+                target_data[target_pixel_index + 2] = source_data[source_pixel_index + 2];
+                
+        }
     }
 }
