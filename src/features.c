@@ -655,7 +655,15 @@ void scale_nearest(char*source_path, float scale){
                 target_data[target_pixel_index] = source_data[source_pixel_index];
                 target_data[target_pixel_index + 1] = source_data[source_pixel_index + 1];
                 target_data[target_pixel_index + 2] = source_data[source_pixel_index + 2];
-                
+
+                if(nbChannels == 4){
+                    target_data[target_pixel_index + 3] = source-data[source_pixel_index + 3];
+                }
+            }
         }
+        write_image_data("image_out.bmp", target_data, target_width, target_height);
+
+        free(source_data);
+        free(target_data);
     }
 }
