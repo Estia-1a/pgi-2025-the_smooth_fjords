@@ -619,9 +619,11 @@ void scale_bilinear(char*source_path, float scale){
                     float interpolated_bottom = value_bottom_left*(1.0f - weight_x) + value_bottom_right*weight_x;
                     float final_value = interpolated_top*(1.0f - weight_y) + interpolated_bottom*weight_y;
                     target_data[target_pixel_index + channel] = (unsigned char) (final_value + 0.5f);
-                    
                 }
             }
         }
+        write_image_data("image_out.bmp", target_data, target_width, target_height);
+        free(source_data);
+        free(target_data);
     }
 }
