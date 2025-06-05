@@ -600,7 +600,27 @@ void scale_bilinear(char*source_path, float scale){
             for (x = 0; x < target_width; x ++){
                 float source_x = (float)x / scale;
                 float source_y = (float)y / scale;
-                
+
+                int x1 = (int)source_x = (int)source_y;
+                int x2 = (x1 + 1 >= width) ? width - 1 : x1 + 1;
+                int y2 = (y1 + 1 >= height) ? height - 1 : y1 + 1;
+
+                float weight_x = source_x - x1;
+                float weight_y = source_y - y1;
+                int target_pixel_index = (y * target_width + x)*nbChannels;
+
+                for (channel = 0; channel < nbChannels; channel++){
+                    float value_top_left = source_data[(y1*width + x1)*nbChannels + channel];
+                    float value_top_right = source_data[(y1*width + x2)*nbChannels + channel];
+                    float value_bottom_left = source_data[(y2*width + x1)*nbChannels + channel];
+                    float value_bottom_right = source_data[(y2*width + x2)*nbChannels + channel];
+
+                    float interpolated_top = value_top_left*(1.0f - weight_x) + value_top_right*weight_x;
+                    float interpolated_bottom = value_bottom_left*(1.0f - weight_x) + value_bottom_right*weight_x;
+                    float final_value = interpolated_top*(1.0f - weight_y) + interpolated_bottom*weight_y;
+                    target_data[target_pixel_index + channel] = (unsigned char) (final_value + 0.5f);
+                    
+                }
             }
         }
     }
