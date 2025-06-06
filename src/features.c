@@ -590,18 +590,19 @@ void scale_bilinear(char*source_path, float scale){
     int width, height, nbChannels;
     unsigned char*source_data;
     unsigned char*target_data;
-    if read_image_data(source_path, &source_data, & width, &height, & nbChannels)){
+    if (read_image_data(source_path, &source_data, & width, &height, & nbChannels)){
         int target_width = (int)(width*scale);
-        int target_heght= (int)(height*scale);
+        int target_height= (int)(height*scale);
         target_data = (unsigned char*)malloc(target_width*target_height*nbChannels*sizeof(unsigned char));
 
-        int y,x channel;
+        int y,x, channel;
         for (y = 0; y < target_height; y++){
             for (x = 0; x < target_width; x ++){
                 float source_x = (float)x / scale;
                 float source_y = (float)y / scale;
 
-                int x1 = (int)source_x = (int)source_y;
+                int x1 = (int)source_x;
+                int y1 = (int)source_y;
                 int x2 = (x1 + 1 >= width) ? width - 1 : x1 + 1;
                 int y2 = (y1 + 1 >= height) ? height - 1 : y1 + 1;
 
@@ -657,7 +658,7 @@ void scale_nearest(char*source_path, float scale){
                 target_data[target_pixel_index + 2] = source_data[source_pixel_index + 2];
 
                 if(nbChannels == 4){
-                    target_data[target_pixel_index + 3] = source-data[source_pixel_index + 3];
+                    target_data[target_pixel_index + 3] = source_data[source_pixel_index + 3];
                 }
             }
         }

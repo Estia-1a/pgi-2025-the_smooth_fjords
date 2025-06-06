@@ -24,7 +24,7 @@ void mirror_total(char * source_path);
 void color_gray_luminance(char* source_path);
 void color_desaturate(char* source_path);
 void color_invert(char* source_path);
-void scale_crop(char* source_path);
+void scale_crop(char* source_path, int center_x, int center_y, int crop_width, int crop_height);
 void scale_bilinear(char*source_path, float scale);
 void scale_nearest (char*source_path, float scale);
 
