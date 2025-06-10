@@ -1,0 +1,9 @@
+/home/runner/work/pgi-2025-the_smooth_fjords/pgi-2025-the_smooth_fjords/src/main.c: In function ‘main’:
+/home/runner/work/pgi-2025-the_smooth_fjords/pgi-2025-the_smooth_fjords/src/main.c:68:3: warning: implicit declaration of function ‘min_component’; did you mean ‘min_composant’? [-Wimplicit-function-declaration]
+   68 |   min_component(configuration.filenames[0], configuration.arguments[0][0]);
+      |   ^~~~~~~~~~~~~
+      |   min_composant
+/home/runner/work/pgi-2025-the_smooth_fjords/pgi-2025-the_smooth_fjords/src/main.c:72:3: warning: implicit declaration of function ‘max_component’; did you mean ‘max_composant’? [-Wimplicit-function-declaration]
+   72 |   max_component(configuration.filenames[0], configuration.arguments[0][0]);
+      |   ^~~~~~~~~~~~~
+      |   max_composant
