@@ -1,0 +1,51 @@
+/home/runner/work/pgi-2025-the_smooth_fjords/pgi-2025-the_smooth_fjords/src/features.c: In function ‘min_pixel’:
+/home/runner/work/pgi-2025-the_smooth_fjords/pgi-2025-the_smooth_fjords/src/features.c:223:19: error: ‘INT_MAX’ undeclared (first use in this function)
+  223 |     int min_sum = INT_MAX;
+      |                   ^~~~~~~
+/home/runner/work/pgi-2025-the_smooth_fjords/pgi-2025-the_smooth_fjords/src/features.c:6:1: note: ‘INT_MAX’ is defined in header ‘<limits.h>’; did you forget to ‘#include <limits.h>’?
+    5 | #include "features.h"
+  +++ |+#include <limits.h>
+    6 | #include "utils.h"
+/home/runner/work/pgi-2025-the_smooth_fjords/pgi-2025-the_smooth_fjords/src/features.c:223:19: note: each undeclared identifier is reported only once for each function it appears in
+  223 |     int min_sum = INT_MAX;
+      |                   ^~~~~~~
+/home/runner/work/pgi-2025-the_smooth_fjords/pgi-2025-the_smooth_fjords/src/main.c: In function ‘main’:
+/home/runner/work/pgi-2025-the_smooth_fjords/pgi-2025-the_smooth_fjords/src/main.c:124:67: warning: passing argument 2 of ‘scale_crop’ makes integer from pointer without a cast [-Wint-conversion]
+  124 |     scale_crop(configuration.filenames[0], configuration.arguments[0], configuration.arguments[1], configuration.arguments[2], configuration.arguments[3]);
+      |                                            ~~~~~~~~~~~~~~~~~~~~~~~^~~
+      |                                                                   |
+      |                                                                   char *
+In file included from /home/runner/work/pgi-2025-the_smooth_fjords/pgi-2025-the_smooth_fjords/src/main.c:8:
+/home/runner/work/pgi-2025-the_smooth_fjords/pgi-2025-the_smooth_fjords/src/features.h:27:40: note: expected ‘int’ but argument is of type ‘char *’
+   27 | void scale_crop(char* source_path, int center_x, int center_y, int crop_width, int crop_height);
+      |                                    ~~~~^~~~~~~~
+/home/runner/work/pgi-2025-the_smooth_fjords/pgi-2025-the_smooth_fjords/src/main.c:124:95: warning: passing argument 3 of ‘scale_crop’ makes integer from pointer without a cast [-Wint-conversion]
+  124 |     scale_crop(configuration.filenames[0], configuration.arguments[0], configuration.arguments[1], configuration.arguments[2], configuration.arguments[3]);
+      |                                                                        ~~~~~~~~~~~~~~~~~~~~~~~^~~
+      |                                                                                               |
+      |                                                                                               char *
+/home/runner/work/pgi-2025-the_smooth_fjords/pgi-2025-the_smooth_fjords/src/features.h:27:54: note: expected ‘int’ but argument is of type ‘char *’
+   27 | void scale_crop(char* source_path, int center_x, int center_y, int crop_width, int crop_height);
+      |                                                  ~~~~^~~~~~~~
+/home/runner/work/pgi-2025-the_smooth_fjords/pgi-2025-the_smooth_fjords/src/main.c:124:123: warning: passing argument 4 of ‘scale_crop’ makes integer from pointer without a cast [-Wint-conversion]
+  124 |     scale_crop(configuration.filenames[0], configuration.arguments[0], configuration.arguments[1], configuration.arguments[2], configuration.arguments[3]);
+      |                                                                                                    ~~~~~~~~~~~~~~~~~~~~~~~^~~
+      |                                                                                                                           |
+      |                                                                                                                           char *
+/home/runner/work/pgi-2025-the_smooth_fjords/pgi-2025-the_smooth_fjords/src/features.h:27:68: note: expected ‘int’ but argument is of type ‘char *’
+   27 | void scale_crop(char* source_path, int center_x, int center_y, int crop_width, int crop_height);
+      |                                                                ~~~~^~~~~~~~~~
+/home/runner/work/pgi-2025-the_smooth_fjords/pgi-2025-the_smooth_fjords/src/main.c:124:151: warning: passing argument 5 of ‘scale_crop’ makes integer from pointer without a cast [-Wint-conversion]
+  124 |     scale_crop(configuration.filenames[0], configuration.arguments[0], configuration.arguments[1], configuration.arguments[2], configuration.arguments[3]);
+      |                                                                                                                                ~~~~~~~~~~~~~~~~~~~~~~~^~~
+      |                                                                                                                                                       |
+      |                                                                                                                                                       char *
+/home/runner/work/pgi-2025-the_smooth_fjords/pgi-2025-the_smooth_fjords/src/features.h:27:84: note: expected ‘int’ but argument is of type ‘char *’
+   27 | void scale_crop(char* source_path, int center_x, int center_y, int crop_width, int crop_height);
+      |                                                                                ~~~~^~~~~~~~~~~
+gmake[2]: *** [CMakeFiles/freud.dir/build.make:93: CMakeFiles/freud.dir/src/features.c.o] Error 1
+gmake[2]: *** Waiting for unfinished jobs....
+gmake[1]: *** [CMakeFiles/Makefile2:87: CMakeFiles/freud.dir/all] Error 2
+gmake: *** [Makefile:136: all] Error 2
+
+The process '/usr/local/bin/cmake' failed with exit code 2
