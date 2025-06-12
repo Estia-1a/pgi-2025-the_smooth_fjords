@@ -121,7 +121,7 @@ int main(int argc, char **argv) {
   }
   if (strncmp(configuration.command, "scale_crop", 10) == 0){
     /*scale_crop()function is defined in features.h and implemented in features.c*/
-    scale_crop(configuration.filenames[0], configuration.arguments[0], configuration.arguments[1], configuration.arguments[2], configuration.arguments[3]);
+    scale_crop(configuration.filenames[0], atoi(configuration.arguments[0]), atoi(configuration.arguments[1]), atoi(configuration.arguments[2]), atoi(configuration.arguments[3]));
   }
   if (strncmp(configuration.command, "scale_bilinear", 14) == 0){
     /* scale _bilinear() function is defined in feature.h and implemented in feature.c*/
