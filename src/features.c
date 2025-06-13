@@ -221,7 +221,7 @@ void min_pixel(char *source_path){
     unsigned char *data;
 
     read_image_data(source_path, &data, &width, &height, &nbChannels);
-    int min_sum = INT_MAX;
+    int min_sum = INT_MIN;
     int min_x = 0;
     int min_y = 0;
 
