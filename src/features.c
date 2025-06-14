@@ -646,13 +646,13 @@ void scale_nearest(char*source_path, float scale){
         target_data = (unsigned char*)malloc(target_width*target_height*nbChannels*sizeof(unsigned char));
 
         int y,x;
-        for (y = 0; y < target_height; x ++){
-            for (y = 0; y < target_width; x ++){
+        for (y = 0; y < target_height; y ++){
+            for (x = 0; x < target_width; x ++){
                 int src_x = (int)((float)x / scale);
                 int src_y = (int)((float)y / scale);
                 
                 if (src_x >= width) src_x = width -1;
-                if (src_y >= width) src_y = width -1;
+                if (src_y >= height) src_y = height -1;
 
                 int target_pixel_index = (y*target_width + x)*nbChannels;
                 int source_pixel_index = (src_y*width + src_x)*nbChannels;
