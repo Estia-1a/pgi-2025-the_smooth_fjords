@@ -316,15 +316,15 @@ void color_gray (char* source_path) {
 
             unsigned char gray = (red + green + blue) / 3;
 
-            source_data[pixel_index] = gray;
-            source_data[pixel_index + 1] = gray;
-            source_data[pixel_index + 2] = gray;
+            target_data[pixel_index] = gray;
+            target_data[pixel_index + 1] = gray;
+            target_data[pixel_index + 2] = gray;
             
             }
         }
 
         write_image_data("image_out.bmp", target_data, width, height);
-        free(source_data);
+        free(target_data);
     }
 }
 
