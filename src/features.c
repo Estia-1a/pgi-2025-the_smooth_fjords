@@ -566,11 +566,9 @@ void scale_crop(char*source_path, int center_x, int center_y, int crop_width, in
 
                 if (src_x >= 0 && src_x < width && src_y >= 0 && src_y < height){
                     int source_pixel_index = (src_y * width + src_x) * nbChannels;
-                    target_data[target_pixel_index] = source_data[source_pixel_index];
-                    target_data[target_pixel_index + 1] = source_data[source_pixel_index + 1];
-                    target_data[target_pixel_index + 2] = source_data[source_pixel_index + 2];
-                    if(nbChannels == 4){
-                        target_data[target_pixel_index + 3 ] = source_data[source_pixel_index + 3];
+                    int c;
+                    for (c = 0; c < nbChannels; c++){
+                        target_data[target_pixel_index + c] = source_data[source_pixel_index + c];
                     }
                 }
                 else {
