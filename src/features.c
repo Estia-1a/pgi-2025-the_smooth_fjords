@@ -339,8 +339,13 @@ void rotate_cw(char* source_path) {
         int target_height = width;
 
         target_data = (unsigned char *)malloc(width * height * nbChannels * sizeof(unsigned char));
+        if (target_data == NULL) {
+            printf("Erreur : impossible d'allouer la mémoire pour l'image de sortie\n");
+            free(source_data);
+            return;
+        }
 
-        int y, x;
+        int y, x,c;
         for (y = 0; y < height; y++){
             for (x = 0; x < width; x++){
                 int source_pixel_index = (y * width + x) * nbChannels;
@@ -349,18 +354,15 @@ void rotate_cw(char* source_path) {
                 int new_y = width - 1 - x;
                 int target_pixel_index = ((new_y * target_width) + new_x) * nbChannels;
 
-                target_data[target_pixel_index] = source_data[source_pixel_index];
-                target_data[target_pixel_index + 1] = source_data[source_pixel_index + 1];
-                target_data[target_pixel_index + 2] = source_data[source_pixel_index + 2];
-
-                if (nbChannels == 4){
-                    target_data[target_pixel_index +3] = source_data[source_pixel_index + 3];
+                for (c = 0; c < nbChannels; c++) {
+                    target_data[target_pixel_index + c] = source_data[source_pixel_index + c];
                 }
             }
         }
         write_image_data("image_out.bmp", target_data, target_width, target_height);
 
         free(target_data);
+        free(source_data);
     }
 }
 
