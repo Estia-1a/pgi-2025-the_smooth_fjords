@@ -559,28 +559,27 @@ void scale_crop(char*source_path, int center_x, int center_y, int crop_width, in
             int src_y = start_y + y;
             int target_pixel_index = (y * crop_width + x)* nbChannels;
 
-            if (src_x >= 0 && src_x < width && src_y >= 0 && src_y < height){
-                int source_pixel_index = (src_y * width + src_x) * nbChannels;
-                int c;
-                for (c = 0; c < nbChannels; c++){
-                    target_data[target_pixel_index + c] = source_data[source_pixel_index + c];
+                if (src_x >= 0 && src_x < width && src_y >= 0 && src_y < height){
+                    int source_pixel_index = (src_y * width + src_x) * nbChannels;
+                    int c;
+                    for (c = 0; c < nbChannels; c++){
+                        target_data[target_pixel_index + c] = source_data[source_pixel_index + c];
+                    }
                 }
-            }
-            else {
-                target_data[target_pixel_index] = 0;
-                target_data[target_pixel_index + 1] = 0;
-                target_data[target_pixel_index + 2] = 0;
-                if (nbChannels == 4){
-                    target_data[target_pixel_index + 3] = 255;
+                else {
+                    target_data[target_pixel_index] = 0;
+                    target_data[target_pixel_index + 1] = 0;
+                    target_data[target_pixel_index + 2] = 0;
+                    if (nbChannels == 4){
+                        target_data[target_pixel_index + 3] = 255;
+                    }
                 }
             }
         }
-    }
 
     write_image_data("image_out.bmp", target_data, target_width, target_height);
     free(source_data);
     free(target_data);
-    }
 }
 
 void scale_bilinear(char*source_path, float scale){
