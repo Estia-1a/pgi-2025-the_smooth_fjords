@@ -567,20 +567,22 @@ void scale_crop(char*source_path, int center_x, int center_y, int crop_width, in
                     }
                 }
                 else {
-                    target_data[target_pixel_index] = 0;
-                    target_data[target_pixel_index + 1] = 0;
-                    target_data[target_pixel_index + 2] = 0;
-                    if (nbChannels == 4){
-                        target_data[target_pixel_index + 3] = 255;
+                    int c;
+                    for (c = 0; c < nbChannels; c++){
+                        if (c < 3){
+                            target_data[target_pixel_index + c] = 0; 
+                        } else if (c == 3) {
+                            target_data[target_pixel_index +c ] = 255;
+                        }
                     }
                 }
             }
         }
+    }
 
     write_image_data("image_out.bmp", target_data, target_width, target_height);
     free(source_data);
     free(target_data);
-    }
 }
 
 void scale_bilinear(char*source_path, float scale){
