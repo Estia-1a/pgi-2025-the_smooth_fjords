@@ -1,0 +1,16 @@
+/home/runner/work/pgi-2025-the_smooth_fjords/pgi-2025-the_smooth_fjords/src/features.c: In function ‘scale_crop’:
+/home/runner/work/pgi-2025-the_smooth_fjords/pgi-2025-the_smooth_fjords/src/features.c:583:52: error: ‘target_width’ undeclared (first use in this function); did you mean ‘target_data’?
+  583 |     write_image_data("image_out.bmp", target_data, target_width, target_height);
+      |                                                    ^~~~~~~~~~~~
+      |                                                    target_data
+/home/runner/work/pgi-2025-the_smooth_fjords/pgi-2025-the_smooth_fjords/src/features.c:583:52: note: each undeclared identifier is reported only once for each function it appears in
+/home/runner/work/pgi-2025-the_smooth_fjords/pgi-2025-the_smooth_fjords/src/features.c:583:66: error: ‘target_height’ undeclared (first use in this function); did you mean ‘crop_height’?
+  583 |     write_image_data("image_out.bmp", target_data, target_width, target_height);
+      |                                                                  ^~~~~~~~~~~~~
+      |                                                                  crop_height
+gmake[2]: *** [CMakeFiles/freud.dir/build.make:93: CMakeFiles/freud.dir/src/features.c.o] Error 1
+gmake[2]: *** Waiting for unfinished jobs....
+gmake[1]: *** [CMakeFiles/Makefile2:87: CMakeFiles/freud.dir/all] Error 2
+gmake: *** [Makefile:136: all] Error 2
+
+The process '/usr/local/bin/cmake' failed with exit code 2
