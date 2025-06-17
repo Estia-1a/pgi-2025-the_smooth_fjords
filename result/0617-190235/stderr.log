@@ -1,0 +1,10 @@
+/home/runner/work/pgi-2025-the_smooth_fjords/pgi-2025-the_smooth_fjords/src/features.c: In function ‘scale_crop’:
+/home/runner/work/pgi-2025-the_smooth_fjords/pgi-2025-the_smooth_fjords/src/features.c:683:1: error: expected declaration or statement at end of input
+  683 | }
+      | ^
+gmake[2]: *** [CMakeFiles/freud.dir/build.make:93: CMakeFiles/freud.dir/src/features.c.o] Error 1
+gmake[2]: *** Waiting for unfinished jobs....
+gmake[1]: *** [CMakeFiles/Makefile2:87: CMakeFiles/freud.dir/all] Error 2
+gmake: *** [Makefile:136: all] Error 2
+
+The process '/usr/local/bin/cmake' failed with exit code 2
