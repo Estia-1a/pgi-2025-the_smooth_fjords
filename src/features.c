@@ -540,7 +540,7 @@ void color_invert(char* source_path) {
     free(data);
 }
 
-void scale_crop(char*source_path, int center_x, int center_y, int crop_width, int crop_height){
+void scale_crop(char*source_path, int center_x, int center_y, int crop_width, int crop_height) {
     int width, height, nbChannels;
     unsigned char*source_data;
     unsigned char*target_data;
@@ -581,6 +581,7 @@ void scale_crop(char*source_path, int center_x, int center_y, int crop_width, in
     free(source_data);
     free(target_data);
 }
+}
 
 void scale_bilinear(char*source_path, float scale){
     int width, height, nbChannels;
@@ -591,7 +592,7 @@ void scale_bilinear(char*source_path, float scale){
         int target_height= (int)(height*scale);
         target_data = (unsigned char*)malloc(target_width*target_height*nbChannels*sizeof(unsigned char));
 
-        int y,x, channel;
+        int y, x, channel;
         for (y = 0; y < target_height; y++){
             for (x = 0; x < target_width; x ++){
                 float source_x = (float)x / scale;
@@ -625,7 +626,7 @@ void scale_bilinear(char*source_path, float scale){
     }
 }
 
-void scale_nearest(char*source_path, float scale){
+void scale_nearest(char*source_path, float scale) {
     int width;
     int height;
     int nbChannels;
@@ -679,5 +680,5 @@ void scale_nearest(char*source_path, float scale){
 
         free(source_data);
         free(target_data);
-    
 }
+
