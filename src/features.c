@@ -448,20 +448,12 @@ void mirror_total(char* source_path) {
 
         for (y = 0; y < height; y++){
             for (x = 0; x < width/2; x++){
-                for (c = 0; c < nbChannels; c++){
-                    temp = data[y*width*nbChannels + x*nbChannels + c];
-                    data[y*width*nbChannels + x*nbChannels + c] = data[y*width*nbChannels + (width - x - 1)*nbChannels + c];
-                    data[y*width*nbChannels + (width - x - 1)*nbChannels + c] = temp;
-                }
-            }
-        }
-
-        for (y = 0; y < height/2; y++){
-            for (x = 0; x < width; x++){
-                for (c = 0; c < nbChannels; c++){
-                    temp = data[y * width * nbChannels + x * nbChannels + c];
-                    data[y * width * nbChannels + x * nbChannels + c] = data[(height - y - 1) * width * nbChannels + x * nbChannels + c];
-                    data[(height - y - 1) * width * nbChannels + x * nbChannels + c] = temp;
+                if (y * width + x < (height - 1 - y) * width + (width - 1 - x)) {
+                    for (c = 0; c < nbChannels; c++){
+                        temp = data[y*width*nbChannels + x*nbChannels + c];
+                        data[y*width*nbChannels + x*nbChannels + c] = data[y*width*nbChannels + (width - x - 1)*nbChannels + c];
+                        data[y*width*nbChannels + (width - x - 1)*nbChannels + c] = temp;
+                    }
                 }
             }
         }
