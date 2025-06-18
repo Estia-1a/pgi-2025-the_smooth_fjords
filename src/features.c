@@ -366,46 +366,61 @@ void rotate_cw(char* source_path) {
     }
 }
 
-void mirror_horizontal(char* source_path) {
-    int width, height, nbChannels;
+void mirror_horizontal(char *filename) {
     unsigned char *data;
-    read_image_data(source_path, &data, &width, &height, &nbChannels);
-    
-    int y, x, c;
-    unsigned char temp;
-    for (y = 0; y < height; y++) {
-        for (x = 0; x < width / 2; x++) {
-            for (c = 0; c < nbChannels; c++) {
-                temp = data[y * width * nbChannels + x * nbChannels + c];
-                data[y * width * nbChannels + x * nbChannels + c] = data[y * width * nbChannels + (width - x - 1) * nbChannels + c];
-                data[y * width * nbChannels + (width - x - 1) * nbChannels + c] = temp;
-            }
+    int A, H, channel_count, i, j;
+ 
+    int resultat = read_image_data(filename, &data, &A, &H, &channel_count);
+    if (resultat == 0) {
+        printf("Erreur avec le fichier: %s\n", filename);
+        return;
+    }
+    unsigned char *new_data = malloc(A * H * 3);
+    for (i = 0; i < H; i++) {
+        for (j = 0; j < A; j++) {
+            int pos_old = (i * A + j) * 3;
+            int pos_new = (i * A + (A - 1 - j)) * 3;
+ 
+            new_data[pos_new] = data[pos_old];
+            new_data[pos_new + 1] = data[pos_old + 1];
+            new_data[pos_new + 2] = data[pos_old + 2];
         }
     }
-    
-    write_image_data("image_out.bmp", data, width, height);
-    free(data);
+ 
+    write_image_data("image_out.bmp", new_data, A, H);
+    printf("image_out.bmp\n");
+    free_image_data(data);
+    free(new_data);
 }
-void mirror_vertical(char* source_path) {
-    int width, height, nbChannels;
+
+void mirror_vertical(char *filename) {
     unsigned char *data;
-    read_image_data(source_path, &data, &width, &height, &nbChannels);
-    
-    int y, x, c;
-    unsigned char temp;
-    for (y = 0; y < height / 2; y++) {
-        for (x = 0; x < width; x++) {
-            for (c = 0; c < nbChannels; c++) {
-                temp = data[y * width * nbChannels + x * nbChannels + c];
-                data[y * width * nbChannels + x * nbChannels + c] = data[(height - y - 1) * width * nbChannels + x * nbChannels + c];
-                data[(height - y - 1) * width * nbChannels + x * nbChannels + c] = temp;
-            }
+    int A, H, channel_count, i, j;
+ 
+    int resultat = read_image_data(filename, &data, &A, &H, &channel_count);
+    if (resultat == 0) {
+        printf("Erreur avec le fichier: %s\n", filename);
+        return;
+    }
+ 
+    unsigned char *new_data = malloc(A * H * 3);
+ 
+    for (i = 0; i < H; i++) {
+        for (j = 0; j < A; j++) {
+            int pos_old = (i * A + j) * 3;
+            int pos_new = ((H - 1 - i) * A + j) * 3;
+ 
+            new_data[pos_new] = data[pos_old];
+            new_data[pos_new + 1] = data[pos_old + 1];
+            new_data[pos_new + 2] = data[pos_old + 2];
         }
     }
-    
-    write_image_data("image_out.bmp", data, width, height);
-    free(data);
-} 
+ 
+    write_image_data("image_out.bmp", new_data, A, H);
+    printf("image_out.bmp\n");
+    free_image_data(data);
+    free(new_data);
+}
 
 
 void rotate_acw(char* source_path) {
@@ -440,38 +455,33 @@ void rotate_acw(char* source_path) {
     }
 }
 
-void mirror_total(char* source_path) {
-    int width, height, nbChannels;
+void mirror_total(char *filename) {
     unsigned char *data;
-
-    read_image_data(source_path, &data, &width, &height, &nbChannels);
-
-    int y, x, c;
-    unsigned char temp;
-
-    for (y = 0; y < height / 2; y++) {
-        for (x = 0; x < width; x++) {
-            for (c = 0; c < nbChannels; c++) {
-                temp = data[y * width * nbChannels + x * nbChannels + c];
-                data[y * width * nbChannels + x * nbChannels + c] = data[(height - y - 1) * width * nbChannels + (width - x - 1) * nbChannels + c];
-                data[(height - y - 1) * width * nbChannels + (width - x - 1) * nbChannels + c] = temp;
-            }
+    int A, H, channel_count, i, j;
+ 
+    int resultat = read_image_data(filename, &data, &A, &H, &channel_count);
+    if (resultat == 0) {
+        printf("Erreur de fichier: %s\n", filename);
+        return;
+    }
+ 
+    unsigned char *new_data = malloc(A * H * 3);
+ 
+    for (i = 0; i < H; i++) {
+        for (j = 0; j < A; j++) {
+            int pos_old = (i * A + j) * 3;
+            int pos_new = ((H - 1 - i) * A + (A - 1 - j)) * 3;
+ 
+            new_data[pos_new] = data[pos_old];
+            new_data[pos_new + 1] = data[pos_old + 1];
+            new_data[pos_new + 2] = data[pos_old + 2];
         }
     }
-
-    if (height % 2 != 0) {
-        y = height / 2;
-        for (x = 0; x < width / 2; x++) {
-            for (c = 0; c < nbChannels; c++) {
-                temp = data[y * width * nbChannels + x * nbChannels + c];
-                data[y * width * nbChannels + x * nbChannels + c] = data[y * width * nbChannels + (width - x - 1) * nbChannels + c];
-                data[y * width * nbChannels + (width - x - 1) * nbChannels + c] = temp;
-            }
-        }
-    }
-
-    write_image_data("image_out.bmp", data, width, height);
-    free(data);
+ 
+    write_image_data("image_out.bmp", new_data, A, H);
+    printf("image_out.bmp\n");
+    free_image_data(data);
+    free(new_data);
 }
 
 void color_gray_luminance(char* source_path) {
