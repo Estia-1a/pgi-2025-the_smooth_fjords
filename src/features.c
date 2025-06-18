@@ -561,64 +561,63 @@ void color_invert(char* source_path) {
     free(data);
 }
 
-void scale_crop(char* source_path, int center_x, int center_y, int crop_width, int crop_height) {
-    int width, height, nbChannels;
-    unsigned char* source_data;
-    unsigned char* target_data;
-    
-    if (!read_image_data(source_path, &source_data, &width, &height, &nbChannels)) {
-        printf("Erreur : impossible de lire l'image source\n");
-        return;
-    }
-    
-    if (crop_width <= 0 || crop_height <= 0) {
-        printf("Erreur : dimensions de crop invalides\n");
-        free(source_data);
-        return;
-    }
-    
-    target_data = (unsigned char*)malloc(crop_width * crop_height * nbChannels * sizeof(unsigned char));
-    if (!target_data) {
-        printf("Erreur : impossible d'allouer la mémoire pour l'image de sortie\n");
-        free(source_data);
-        return;
-    }
-    
-    int start_x = center_x - crop_width / 2;
-    int start_y = center_y - crop_height / 2;
-    
-    int y, x, c;
-    
-    for (y = 0; y < crop_height; y++) {
-        for (x = 0; x < crop_width; x++) {
-            int src_x = start_x + x;
-            int src_y = start_y + y;
-            
-            int target_pixel_index = (y * crop_width + x) * nbChannels;
-            
-            if (src_x >= 0 && src_x < width && src_y >= 0 && src_y < height) {
-                int source_pixel_index = (src_y * width + src_x) * nbChannels;
-                
-                for (c = 0; c < nbChannels; c++) {
-                    target_data[target_pixel_index + c] = source_data[source_pixel_index + c];
-                }
-            }
-            else {
-                for (c = 0; c < nbChannels; c++) {
-                    if (c < 3) {  // RGB : noir
-                        target_data[target_pixel_index + c] = 0;
-                    } else {      // Alpha : opaque
-                        target_data[target_pixel_index + c] = 255;
-                    }
+void scale_crop (char *source_path, int center_x, int center_y, int crop_width, int crop_height){
+    unsigned char *data;
+    int width, height, channels;
+ 
+    int resultat = read_image_data(source_path, &data, &width, &height, &channels);
+ 
+    if (resultat){
+        unsigned char* cropped_data = (unsigned char*) malloc(crop_width * crop_height * channels);
+        if (!cropped_data) {
+            printf("Erreur d'allocation mémoire.\n");
+            return;
+        }
+ 
+        if (center_x + crop_width/2 > width){
+            center_x = width - crop_width/2;
+        }
+        if (center_y + crop_height/2 > height){
+            center_y = height - crop_height/2;
+        }
+        if (center_x < crop_width/2){
+            center_x = crop_width/2;
+        }
+        if (center_y < crop_height/2){
+            center_y = crop_height/2;
+        }
+ 
+        int start_x = center_x - crop_width / 2;
+        int start_y = center_y - crop_height / 2;
+ 
+        for (int y = 0; y < crop_height; y++) {
+            for (int x = 0; x < crop_width; x++) {
+                int src_x = start_x + x;
+                int src_y = start_y + y;
+                pixelRGB* src_pixel = get_pixel(data, width, height, channels, src_x, src_y);
+                if (src_pixel) {
+                    int dest_idx = channels * (x + y * crop_width);
+                    cropped_data[dest_idx] = src_pixel->R;
+                    cropped_data[dest_idx + 1] = src_pixel->G;
+                    cropped_data[dest_idx + 2] = src_pixel->B;
                 }
             }
         }
+    const char *dst_path = "image_out.bmp";
+    int res = write_image_data(dst_path, cropped_data, crop_width, crop_height);
+ 
+    if (res == 0) {
+            printf("Erreur lors de l'écriture du fichier\n");
+        }
+ 
+    free(data);
+    free(cropped_data);
+    return;
     }
-    
-    write_image_data("image_out.bmp", target_data, crop_width, crop_height);
-    
-    free(source_data);
-    free(target_data);
+ 
+    else {
+        printf("Erreur lors de la lecture de l'image\n");
+    }
 }
 
 
