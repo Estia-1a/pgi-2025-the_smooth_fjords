@@ -562,34 +562,64 @@ void color_invert(char* source_path) {
 
 void scale_crop(char* filename, int center_x, int center_y, int crop_width, int crop_height) {
     int width, height, channels;
-    unsigned char* data;
+    unsigned char* data = NULL;
  
     if (read_image_data(filename, &data, &width, &height, &channels) == 0) {
-        printf("Erreur lecture image\n");
+        printf("Erreur lecture image:\n");
         return;
     }
  
-    int start_x = center_x - crop_width / 2;
-    int start_y = center_y - crop_height / 2;
-    int real_start_x = (start_x < 0) ? 0 : start_x;
-    int real_start_y = (start_y < 0) ? 0 : start_y;
-    int real_end_x = center_x + crop_width / 2;
-    int real_end_y = center_y + crop_height / 2;
+    int desired_start_x = center_x - crop_width / 2;
+    int desired_start_y = center_y - crop_height / 2;
+    int desired_end_x = center_x + crop_width / 2;
+    int desired_end_y = center_y + crop_height /2;
+
+    int real_src_start_x = (desired_start_x < 0) ? 0 : desired_start_x;
+    int real_src_start_y = (desired_start_y < 0) ? 0 : desired_start_y;
+    int real_src_end_x = (desired_end_x > width) ? width : desired_end_x;
+    int real_src_end_y = (desired_end_y > width) ? width : desired_end_y;
  
-    if (real_end_x > width) real_end_x = width;
-    if (real_end_y > height) real_end_y = height;
+    int real_output_width = real_src_end_x - real_src_start_x;
+    int real_output_height = real_src_end_y - real_src_start_y;
  
-    int real_width = real_end_x - real_start_x;
-    int real_height = real_end_y - real_start_y;
-    unsigned char* cropped = malloc(real_width * real_height * channels);
- 
-    for (int y = 0; y < real_height; y++) {
-        for (int x = 0; x < real_width; x++) {
-            pixelRGB* px = get_pixel(data, width, height, channels, real_start_x + x, real_start_y + y);
-            set_pixel(cropped, real_width, channels, x, y, *px);
+    if (real_output_width <= 0 || real_output_height <= 0) {
+    printf("La zone de recadrage est invalide ou vide. Aucune image de sortie ne sera créée.\n");
+    free(data); 
+    return;
+    }
+
+    unsigned char* cropped_data = malloc(real_output_width * real_output_height * channels);
+    if (cropped_data == NULL) {
+        printf("Erreur d'allocation mémoire pour l'image recadrée.\n");
+        free(data); 
+        return;
+    }
+
+
+    for (int y = 0; y < real_output_height; y++) {
+        for (int x = 0; x < real_output_width; x++) {
+            int original_pixel_x = real_src_start_x + x;
+            int original_pixel_y = real_src_start_y + y;
+
+            pixelRGB* original_px_ptr = get_pixel(data, (unsigned int*)&width, (unsigned int*)&height, (unsigned int)channels, original_pixel_x, original_pixel_y);
+            
+            if (original_px_ptr == NULL) {
+                continue; 
+            }
+            pixelRGB original_px = *original_px_ptr; 
+
+            set_pixel(cropped_data, real_output_width, (unsigned int)channels, x, y, original_px);
         }
     }
-    write_image_data("image_out.bmp", cropped, real_width, real_height);
+
+    if (write_image_data("image_out.bmp", cropped_data, real_output_width, real_output_height) == 0) {
+        printf("Erreur lors de l'écriture de l'image recadrée 'image_out.bmp'.\n");
+    } else {
+        printf("Image recadree enregistree sous 'image_out.bmp' avec une dimension de %dx%d.\n", real_output_width, real_output_height);
+    }
+
+    free(data);
+    free(cropped_data);
 }
 
 
