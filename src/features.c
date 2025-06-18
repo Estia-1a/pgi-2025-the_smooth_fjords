@@ -366,45 +366,50 @@ void rotate_cw(char* source_path) {
     }
 }
 
-void mirror_horizontal(char* source_path) {
-    int width, height, nbChannels;
-    unsigned char *data;
-    if (read_image_data(source_path, &data, &width, &height, &nbChannels)){
-        int y, x, c;
-        unsigned char temp;
-        for (y = 0; y < height; y++){
-            for (x = 0; x < width/2; x++){
-                for (c = 0; c < nbChannels; c++){
-                    temp = data[y*width*nbChannels + x * nbChannels + c];
-                    data[y * width * nbChannels + x * nbChannels + c] = data[y * width * nbChannels + (width - x - 1)*nbChannels + c];
-                    data[y * width * nbChannels + (width - x - 1) * nbChannels + c] = temp;
-                }
-            }
-        }
-        write_image_data("image_out.bmp", data, width, height);
-        free(data);
+void mirror_horizontal(char* filename) {
+    int width, height, channels;
+    unsigned char* data;
+
+    if (read_image_data(filename, &data, &width, &height, &channels) == 0) {
+        printf("Erreur : impossible de lire l'image\n");
+        return;
     }
+
+    unsigned char* mirrored = malloc(width * height * channels);
+
+    for (int y = 0; y < height; y++) {
+        for (int x = 0; x < width; x++) {
+            int src_x = width - 1 - x;  
+            pixelRGB* src = get_pixel(data, width, height, channels, src_x, y);
+            set_pixel(mirrored, width, channels, x, y, *src);
+        }
+    }
+
+    write_image_data("image_out.bmp", mirrored, width, height);
+    free(mirrored);
 }
 
-void mirror_vertical(char *source_path){
-    int width, height, nbChannels;
-    unsigned char *data;
-    read_image_data(source_path, &data, &width, &height, &nbChannels);
+void mirror_vertical(char* filename) {
+    int width, height, channels;
+    unsigned char* data;
 
-    int y, x, c;
-    unsigned char temp;
-    for(y = 0; y < height/2; y++){
-        for (x = 0; x < width; x++){
-            for (c = 0; c < nbChannels; c++){
-                temp = data[y * width * nbChannels + x * nbChannels + c];
-                data[y * width * nbChannels + x * nbChannels + c] = data[(height - y - 1) * width * nbChannels + x *nbChannels + c];
-                data [(height - y - 1) * width * nbChannels + x * nbChannels + c] = temp;
-            }
+    if (read_image_data(filename, &data, &width, &height, &channels) == 0) {
+        printf("Erreur : impossible de lire l'image\n");
+        return;
+    }
+
+    unsigned char* mirrored = malloc(width * height * channels);
+
+    for (int y = 0; y < height; y++) {
+        for (int x = 0; x < width; x++) {
+            int src_y = height - 1 - y;  
+            pixelRGB* src = get_pixel(data, &width, &height, channels, x, src_y);
+            set_pixel(mirrored, width, channels, x, y, *src);
         }
     }
 
-    write_image_data("image_out.bmp", data, width, height);
-    free(data);
+    write_image_data("image_out.bmp", mirrored, width, height);
+    free(mirrored);
 }
 
 void rotate_acw(char* source_path) {
@@ -439,40 +444,25 @@ void rotate_acw(char* source_path) {
     }
 }
 
-void mirror_total(char* source_path) {
-    int width, height, nbChannels;
-    unsigned char *data;
-
-    if (read_image_data(source_path, &data, &width, &height, &nbChannels)){
-        int y, x, c;
-
-        unsigned char temp;
-
-        for (y = 0; y < height; y++) {
-            for (x = 0; x < width /2; x++) {
-                for (c = 0; c < nbChannels; c++) {
-                    temp = data[y*width*nbChannels + x *nbChannels +c];
-                    data[y * width * nbChannels + x *nbChannels + c] = data[y * width * nbChannels + (width - x - 1)*nbChannels + c];
-                    data[y * width * nbChannels + (width - x - 1) * nbChannels + c] = temp;
-                }
-                
-                
-            }
-
-            for(y = 0; y < height/2; y++) {
-            for (x = 0; x < width; x++) {
-                for (c = 0; c < nbChannels; c++) {
-                    temp = data[y * width * nbChannels + x * nbChannels + c];
-                    data[y * width * nbChannels + x * nbChannels + c] = data[(height - y - 1) * width * nbChannels + x *nbChannels + c];
-                    data[(height - y - 1) * width * nbChannels + x * nbChannels + c] = temp;
-                }
-            }
-        }
-        }
-
-        write_image_data("image_out.bmp", data, width, height);
-        free(data);
+void mirror_total(char* filename) {
+    int width, height, channels;
+    unsigned char* data;
+ 
+    if (read_image_data(filename, &data, &width, &height, &channels) == 0) {
+        printf("Erreur : impossible de lire l'image\n");
+        return;
     }
+ 
+    unsigned char* mirrored = malloc(width * height * channels);
+    for (int y = 0; y < height; y++) {
+        for (int x = 0; x < width; x++) {
+            int src_x = width - 1 - x;
+            int src_y = height - 1 - y;
+            pixelRGB* src = get_pixel(data, width, height, channels, src_x, src_y);
+            set_pixel(mirrored, width, channels, x, y, *src);
+        }
+    }
+    write_image_data("image_out.bmp", mirrored, width, height);
 }
 
 void color_gray_luminance(char* source_path) {
