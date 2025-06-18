@@ -560,73 +560,36 @@ void color_invert(char* source_path) {
     free(data);
 }
 
-void scale_crop(char *source_path, int center_x, int center_y, int crop_width, int crop_height) {
-    unsigned char *data;
-    int width, height, channels; 
+void scale_crop(char* filename, int center_x, int center_y, int crop_width, int crop_height) {
+    int width, height, channels;
+    unsigned char* data;
  
-    if (!read_image_data(source_path, &data, &width, &height, &channels)) {
-        printf("Erreur lors de la lecture de l'image source : %s\n", source_path);
+    if (read_image_data(filename, &data, &width, &height, &channels) == 0) {
+        printf("Erreur lecture image\n");
         return;
     }
-
-    if (crop_width <= 0 || crop_height <= 0) {
-        printf("Erreur: Les dimensions de rognage doivent être positives (width=%d, height=%d).\n", crop_width, crop_height);
-        free_image_data(data); 
-        return;
-    }
-
-    unsigned char *cropped_data = (unsigned char *)malloc(crop_width * crop_height * channels * sizeof(unsigned char));
-    if (!cropped_data) {
-        printf("Erreur d'allocation mémoire pour l'image recadrée.\n");
-        free_image_data(data); 
-        return;
-    }
-
-    int start_x_source = center_x - crop_width / 2;
-    int start_y_source = center_y - crop_height / 2;
-
-    int start_x_target = 0;
-    int start_y_target = 0;
-
-    if (start_x_source < 0) {
-        start_x_target = -start_x_source; 
-        start_x_source = 0;                
-    }
-    if (start_y_source < 0) {
-        start_y_target = -start_y_source; 
-        start_y_source = 0;                
-    }
-
-    for (int y_target = start_y_target; y_target < crop_height; y_target++) {
-        for (int x_target = start_x_target; x_target < crop_width; x_target++) {
-            int src_x = start_x_source + (x_target - start_x_target);
-            int src_y = start_y_source + (y_target - start_y_target);
-
-            if (src_x >= 0 && src_x < width && src_y >= 0 && src_y < height) {
-                int source_pixel_index = (src_y * width + src_x) * channels;
-                int target_pixel_index = (y_target * crop_width + x_target) * channels;
-
-                for (int c = 0; c < channels; c++) {
-                    cropped_data[target_pixel_index + c] = data[source_pixel_index + c];
-                }
-            } else {
-                int target_pixel_index = (y_target * crop_width + x_target) * channels;
-                for (int c = 0; c < channels; c++) {
-                    cropped_data[target_pixel_index + c] = 0; 
-                }
-            }
+ 
+    int start_x = center_x - crop_width / 2;
+    int start_y = center_y - crop_height / 2;
+    int real_start_x = (start_x < 0) ? 0 : start_x;
+    int real_start_y = (start_y < 0) ? 0 : start_y;
+    int real_end_x = center_x + crop_width / 2;
+    int real_end_y = center_y + crop_height / 2;
+ 
+    if (real_end_x > width) real_end_x = width;
+    if (real_end_y > height) real_end_y = height;
+ 
+    int real_width = real_end_x - real_start_x;
+    int real_height = real_end_y - real_start_y;
+    unsigned char* cropped = malloc(real_width * real_height * channels);
+ 
+    for (int y = 0; y < real_height; y++) {
+        for (int x = 0; x < real_width; x++) {
+            pixelRGB* px = get_pixel(data, width, height, channels, real_start_x + x, real_start_y + y);
+            set_pixel(cropped, real_width, channels, x, y, *px);
         }
     }
-    
-    const char *dst_path = "image_out.bmp";
-    int res = write_image_data(dst_path, cropped_data, crop_width, crop_height);
- 
-    if (res == 0) {
-        printf("Erreur lors de l'écriture du fichier de sortie: %s\n", dst_path);
-    }
- 
-    free_image_data(data); 
-    free(cropped_data);
+    write_image_data("image_out.bmp", cropped, real_width, real_height);
 }
 
 
