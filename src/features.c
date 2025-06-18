@@ -552,62 +552,62 @@ void color_invert(char* source_path) {
     free(data);
 }
 
-void scale_crop(char*source_path, int center_x, int center_y, int crop_width, int crop_height) {
+void scale_crop(char* source_path, int center_x, int center_y, int crop_width, int crop_height) {
     int width, height, nbChannels;
-    unsigned char*source_data;
-    unsigned char*target_data;
-
+    unsigned char* source_data;
+    unsigned char* target_data;
+    
     if (!read_image_data(source_path, &source_data, &width, &height, &nbChannels)) {
         printf("Erreur : impossible de lire l'image source\n");
         return;
     }
-
+    
     if (crop_width <= 0 || crop_height <= 0) {
         printf("Erreur : dimensions de crop invalides\n");
         free(source_data);
         return;
     }
-
+    
     target_data = (unsigned char*)malloc(crop_width * crop_height * nbChannels * sizeof(unsigned char));
     if (!target_data) {
         printf("Erreur : impossible d'allouer la mémoire pour l'image de sortie\n");
         free(source_data);
         return;
     }
-
-
+    
     int start_x = center_x - crop_width / 2;
-    int start_y = center_y - crop_height /2;
-
-    int y, x,c;
-        
+    int start_y = center_y - crop_height / 2;
+    
+    int y, x, c;
+    
     for (y = 0; y < crop_height; y++) {
-        for (x = 0; x < crop_width; x ++) {
+        for (x = 0; x < crop_width; x++) {
             int src_x = start_x + x;
             int src_y = start_y + y;
-
-            int target_pixel_index = (y * crop_width + x)* nbChannels;
-
-                if (src_x >= 0 && src_x < width && src_y >= 0 && src_y < height){
-                    int source_pixel_index = (src_y * width + src_x) * nbChannels;
-                    int c;
-                    for (c = 0; c < nbChannels; c++){
-                        target_data[target_pixel_index + c] = source_data[source_pixel_index + c];
-                    }
+            
+            int target_pixel_index = (y * crop_width + x) * nbChannels;
+            
+            if (src_x >= 0 && src_x < width && src_y >= 0 && src_y < height) {
+                int source_pixel_index = (src_y * width + src_x) * nbChannels;
+                
+                for (c = 0; c < nbChannels; c++) {
+                    target_data[target_pixel_index + c] = source_data[source_pixel_index + c];
                 }
-                else {
-                    for (c =0; c< nbChannels; c++) {
-                        if (c<3) {
-                            target_data[target_pixel_index +c] =0;
-                        } else {
-                            target_data[target_pixel_index +c] =255;
-                        }
+            }
+            else {
+                for (c = 0; c < nbChannels; c++) {
+                    if (c < 3) {  // RGB : noir
+                        target_data[target_pixel_index + c] = 0;
+                    } else {      // Alpha : opaque
+                        target_data[target_pixel_index + c] = 255;
                     }
                 }
             }
         }
-
+    }
+    
     write_image_data("image_out.bmp", target_data, crop_width, crop_height);
+    
     free(source_data);
     free(target_data);
 }
