@@ -479,7 +479,6 @@ void mirror_total(char *filename) {
     }
  
     write_image_data("image_out.bmp", new_data, A, H);
-    printf("image_out.bmp\n");
     free_image_data(data);
     free(new_data);
 }
