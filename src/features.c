@@ -681,7 +681,7 @@ void scale_nearest(char*source_path, float scale) {
 
     if (scale > 0) {
         if (target_width == 0) target_width = 1;
-        if (target_height == 0) target_height =1;
+        if (target_height == 0) target_height = 1;
     }
 
     if (target_width <=0 || target_height <=0) {
