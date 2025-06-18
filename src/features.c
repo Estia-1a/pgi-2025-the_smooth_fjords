@@ -557,12 +557,20 @@ void scale_crop(char*source_path, int center_x, int center_y, int crop_width, in
         return;
     }
 
-    // Validation des dimensions
     if (crop_width <= 0 || crop_height <= 0) {
         printf("Erreur : dimensions de crop invalides\n");
         free(source_data);
         return;
     }
+
+    target_data = (unsigned char*)malloc(crop_width * crop_height * nbChannels * sizeof(unsigned char));
+    if (!target_data) {
+        printf("Erreur : impossible d'allouer la mémoire pour l'image de sortie\n");
+        free(source_data);
+        return;
+    }
+
+
     int start_x = center_x - crop_width / 2;
     int start_y = center_y - crop_height /2;
 
