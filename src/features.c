@@ -442,24 +442,28 @@ void rotate_acw(char* source_path) {
 void mirror_total(char* source_path) {
     int width, height, nbChannels;
     unsigned char *data;
+
     if (read_image_data(source_path, &data, &width, &height, &nbChannels)){
         int y, x, c;
         unsigned char temp;
 
-        int total_pixels = width * height;
-
-        for (int i =0; i < total_pixels /2; i++) {
-            int current_index = i * nbChannels;
-
-            int opposite_index = i * nbChannels;
-            
-            for (c = 0; c < nbChannels; c++){
-                temp = data[y*width*nbChannels + x*nbChannels + c];
-                data[current_index + c] = data[opposite_index + c];
-                data[opposite_index + c] = temp;
-            }
-
-        }
+        for (y = 0; y < height; y++) {
+                    for (x = 0; x < width; x++) {
+                        int opposite_y = height - 1 - y;
+                        int opposite_x = width - 1 - x;
+                        
+                        if (y * width + x < opposite_y * width + opposite_x) {
+                            for (c = 0; c < nbChannels; c++) {
+                                int current_index = y * width * nbChannels + x * nbChannels + c;
+                                int opposite_index = opposite_y * width * nbChannels + opposite_x * nbChannels + c;
+                                
+                                temp = data[current_index];
+                                data[current_index] = data[opposite_index];
+                                data[opposite_index] = temp;
+                            }
+                        }
+                    }
+                }
 
         write_image_data("image_out.bmp", data, width, height);
         free(data);
