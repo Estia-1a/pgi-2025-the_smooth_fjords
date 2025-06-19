@@ -479,7 +479,6 @@ void mirror_total(char *filename) {
     }
  
     write_image_data("image_out.bmp", new_data, A, H);
-    printf("image_out.bmp\n");
     free_image_data(data);
     free(new_data);
 }
@@ -561,63 +560,86 @@ void color_invert(char* source_path) {
     free(data);
 }
 
-void scale_crop (char *source_path, int center_x, int center_y, int crop_width, int crop_height){
-    unsigned char *data;
-    int width, height, channels;
- 
-    int resultat = read_image_data(source_path, &data, &width, &height, &channels);
- 
-    if (resultat){
-        unsigned char* cropped_data = (unsigned char*) malloc(crop_width * crop_height * channels);
-        if (!cropped_data) {
-            printf("Erreur d'allocation mémoire.\n");
-            return;
-        }
- 
-        if (center_x + crop_width/2 > width){
-            center_x = width - crop_width/2;
-        }
-        if (center_y + crop_height/2 > height){
-            center_y = height - crop_height/2;
-        }
-        if (center_x < crop_width/2){
-            center_x = crop_width/2;
-        }
-        if (center_y < crop_height/2){
-            center_y = crop_height/2;
-        }
- 
-        int start_x = center_x - crop_width / 2;
-        int start_y = center_y - crop_height / 2;
- 
-        for (int y = 0; y < crop_height; y++) {
-            for (int x = 0; x < crop_width; x++) {
-                int src_x = start_x + x;
-                int src_y = start_y + y;
-                pixelRGB* src_pixel = get_pixel(data, width, height, channels, src_x, src_y);
-                if (src_pixel) {
-                    int dest_idx = channels * (x + y * crop_width);
-                    cropped_data[dest_idx] = src_pixel->R;
-                    cropped_data[dest_idx + 1] = src_pixel->G;
-                    cropped_data[dest_idx + 2] = src_pixel->B;
+void scale_crop(char* source_path, int center_x, int center_y, int crop_width, int crop_height) {
+    int width, height, nbChannels;
+    unsigned char* source_data;
+    unsigned char* target_data;
+    
+    if (!read_image_data(source_path, &source_data, &width, &height, &nbChannels)) {
+        printf("Erreur : impossible de lire l'image source %s\n", source_path);
+        return;
+    }
+    
+    printf("DEBUG: Image chargée - Dimensions: %dx%d, Canaux: %d\n", width, height, nbChannels);
+    printf("DEBUG: Paramètres crop - Centre: (%d,%d), Taille: %dx%d\n", 
+           center_x, center_y, crop_width, crop_height);
+    
+    if (crop_width <= 0 || crop_height <= 0) {
+        printf("Erreur : dimensions de crop invalides (%dx%d)\n", crop_width, crop_height);
+        free(source_data);
+        return;
+    }
+    
+    size_t target_size = crop_width * crop_height * nbChannels;
+    target_data = (unsigned char*)calloc(target_size, sizeof(unsigned char));
+    if (!target_data) {
+        printf("Erreur : impossible d'allouer %zu bytes pour l'image de sortie\n", target_size);
+        free(source_data);
+        return;
+    }
+    
+    int start_x = center_x - crop_width / 2;
+    int start_y = center_y - crop_height / 2;
+    
+    printf("DEBUG: Zone de crop - Début: (%d,%d), Fin: (%d,%d)\n", 
+           start_x, start_y, start_x + crop_width - 1, start_y + crop_height - 1);
+    
+    int pixels_valides = 0;
+    int pixels_hors_limites = 0;
+    
+    for (int target_y = 0; target_y < crop_height; target_y++) {
+        for (int target_x = 0; target_x < crop_width; target_x++) {
+            int source_x = start_x + target_x;
+            int source_y = start_y + target_y;
+            
+            int target_index = (target_y * crop_width + target_x) * nbChannels;
+            
+            if (source_x >= 0 && source_x < width && source_y >= 0 && source_y < height) {
+                int source_index = (source_y * width + source_x) * nbChannels;
+                
+                for (int c = 0; c < nbChannels; c++) {
+                    target_data[target_index + c] = source_data[source_index + c];
                 }
+                pixels_valides++;
+            } else {
+                for (int c = 0; c < nbChannels; c++) {
+                    if (c < 3) {
+                        target_data[target_index + c] = 0;  // RGB = noir
+                    } else {
+                        target_data[target_index + c] = 255;  // Alpha = opaque
+                    }
+                }
+                pixels_hors_limites++;
             }
         }
-    const char *dst_path = "image_out.bmp";
-    int res = write_image_data(dst_path, cropped_data, crop_width, crop_height);
- 
-    if (res == 0) {
-            printf("Erreur lors de l'écriture du fichier\n");
-        }
- 
-    free(data);
-    free(cropped_data);
-    return;
     }
- 
-    else {
-        printf("Erreur lors de la lecture de l'image\n");
+    
+    printf("DEBUG: Pixels copiés: %d valides, %d hors limites (total: %d)\n", 
+           pixels_valides, pixels_hors_limites, crop_width * crop_height);
+    
+    if (pixels_valides > 0) {
+        printf("DEBUG: Premier pixel valide - R:%d G:%d B:%d\n", 
+               target_data[0], target_data[1], target_data[2]);
     }
+    
+    if (!write_image_data("image_out.bmp", target_data, crop_width, crop_height)) {
+        printf("Erreur : impossible de sauvegarder l'image de sortie\n");
+    } else {
+        printf("DEBUG: Image sauvegardée avec succès (%dx%d)\n", crop_width, crop_height);
+    }
+    
+    free(source_data);
+    free(target_data);
 }
 
 
@@ -670,59 +692,59 @@ void scale_nearest(char*source_path, float scale) {
     int nbChannels;
     unsigned char*source_data;
     unsigned char*target_data;
-
+ 
     if (!read_image_data(source_path, &source_data, &width, &height, &nbChannels)){
         printf("Erreur : impossible de lire l'image source \n");
         return;
-    }   
-
+    }  
+ 
     int target_width = (int)(width * scale);
     int target_height = (int)(height * scale);
-
+ 
     if (scale > 0) {
         if (target_width == 0) target_width = 1;
-        if (target_height == 0) target_height =1;
+        if (target_height == 0) target_height = 1;
     }
-
+ 
     if (target_width <=0 || target_height <=0) {
         printf("Erreur : dimension invalides (scale = %.2f)\n", scale);
         free(source_data);
         return;
     }
-
+ 
     target_data = (unsigned char*)malloc(target_width * target_height * nbChannels * sizeof(unsigned char));
     if (target_data == NULL) {
         printf("Erreur : impossible d'allouer la memoire pour l'image de sortie \n");
         free(source_data);
         return;
     }    
-
-
-
+ 
+ 
+ 
         int y,x,c;
         for (y = 0; y < target_height; y ++) {
             for (x = 0; x < target_width; x ++) {
-
+ 
                 int src_x = (int)((float)x / scale + 0.5f);
                 int src_y = (int)((float)y / scale + 0.5f);
-                
+               
                 if (src_x < 0) src_x = 0;
                 if (src_y < 0) src_y = 0;
                 if (src_x >= width) src_x = width -1;
                 if (src_y >= height) src_y = height -1;
-
-
+ 
+ 
                 int target_pixel_index = (y * target_width + x)*nbChannels;
                 int source_pixel_index = (src_y * width + src_x)*nbChannels;
-
+ 
                 for (c=0; c < nbChannels; c++) {
                     target_data[target_pixel_index + c]= source_data[source_pixel_index + c];
                 }
-                
+               
             }
         }
         write_image_data("image_out.bmp", target_data, target_width, target_height);
-
+ 
         free(source_data);
         free(target_data);
 }
