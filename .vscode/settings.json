@@ -17,4 +17,7 @@
         "features.h": "c",
         "utils.h": "c"
     },
+    "githubPullRequests.ignoredPullRequestBranches": [
+        "main"
+    ],
 }
