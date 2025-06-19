@@ -560,36 +560,86 @@ void color_invert(char* source_path) {
     free(data);
 }
 
-void scale_crop(char* filename, int center_x, int center_y, int crop_width, int crop_height) {
-    int width, height, channels;
-    unsigned char* data;
- 
-    if (read_image_data(filename, &data, &width, &height, &channels) == 0) {
-        printf("Erreur lecture image\n");
+void scale_crop(char* source_path, int center_x, int center_y, int crop_width, int crop_height) {
+    int width, height, nbChannels;
+    unsigned char* source_data;
+    unsigned char* target_data;
+    
+    if (!read_image_data(source_path, &source_data, &width, &height, &nbChannels)) {
+        printf("Erreur : impossible de lire l'image source %s\n", source_path);
         return;
     }
- 
+    
+    printf("DEBUG: Image chargée - Dimensions: %dx%d, Canaux: %d\n", width, height, nbChannels);
+    printf("DEBUG: Paramètres crop - Centre: (%d,%d), Taille: %dx%d\n", 
+           center_x, center_y, crop_width, crop_height);
+    
+    if (crop_width <= 0 || crop_height <= 0) {
+        printf("Erreur : dimensions de crop invalides (%dx%d)\n", crop_width, crop_height);
+        free(source_data);
+        return;
+    }
+    
+    size_t target_size = crop_width * crop_height * nbChannels;
+    target_data = (unsigned char*)calloc(target_size, sizeof(unsigned char));
+    if (!target_data) {
+        printf("Erreur : impossible d'allouer %zu bytes pour l'image de sortie\n", target_size);
+        free(source_data);
+        return;
+    }
+    
     int start_x = center_x - crop_width / 2;
     int start_y = center_y - crop_height / 2;
-    int real_start_x = (start_x < 0) ? 0 : start_x;
-    int real_start_y = (start_y < 0) ? 0 : start_y;
-    int real_end_x = center_x + crop_width / 2;
-    int real_end_y = center_y + crop_height / 2;
- 
-    if (real_end_x > width) real_end_x = width;
-    if (real_end_y > height) real_end_y = height;
- 
-    int real_width = real_end_x - real_start_x;
-    int real_height = real_end_y - real_start_y;
-    unsigned char* cropped = malloc(real_width * real_height * channels);
- 
-    for (int y = 0; y < real_height; y++) {
-        for (int x = 0; x < real_width; x++) {
-            pixelRGB* px = get_pixel(data, width, height, channels, real_start_x + x, real_start_y + y);
-            set_pixel(cropped, real_width, channels, x, y, *px);
+    
+    printf("DEBUG: Zone de crop - Début: (%d,%d), Fin: (%d,%d)\n", 
+           start_x, start_y, start_x + crop_width - 1, start_y + crop_height - 1);
+    
+    int pixels_valides = 0;
+    int pixels_hors_limites = 0;
+    
+    for (int target_y = 0; target_y < crop_height; target_y++) {
+        for (int target_x = 0; target_x < crop_width; target_x++) {
+            int source_x = start_x + target_x;
+            int source_y = start_y + target_y;
+            
+            int target_index = (target_y * crop_width + target_x) * nbChannels;
+            
+            if (source_x >= 0 && source_x < width && source_y >= 0 && source_y < height) {
+                int source_index = (source_y * width + source_x) * nbChannels;
+                
+                for (int c = 0; c < nbChannels; c++) {
+                    target_data[target_index + c] = source_data[source_index + c];
+                }
+                pixels_valides++;
+            } else {
+                for (int c = 0; c < nbChannels; c++) {
+                    if (c < 3) {
+                        target_data[target_index + c] = 0;  // RGB = noir
+                    } else {
+                        target_data[target_index + c] = 255;  // Alpha = opaque
+                    }
+                }
+                pixels_hors_limites++;
+            }
         }
     }
-    write_image_data("image_out.bmp", cropped, real_width, real_height);
+    
+    printf("DEBUG: Pixels copiés: %d valides, %d hors limites (total: %d)\n", 
+           pixels_valides, pixels_hors_limites, crop_width * crop_height);
+    
+    if (pixels_valides > 0) {
+        printf("DEBUG: Premier pixel valide - R:%d G:%d B:%d\n", 
+               target_data[0], target_data[1], target_data[2]);
+    }
+    
+    if (!write_image_data("image_out.bmp", target_data, crop_width, crop_height)) {
+        printf("Erreur : impossible de sauvegarder l'image de sortie\n");
+    } else {
+        printf("DEBUG: Image sauvegardée avec succès (%dx%d)\n", crop_width, crop_height);
+    }
+    
+    free(source_data);
+    free(target_data);
 }
 
 
