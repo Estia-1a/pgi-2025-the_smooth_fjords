@@ -1,0 +1,19 @@
+/home/runner/work/pgi-2025-the_smooth_fjords/pgi-2025-the_smooth_fjords/src/features.c: In function ‘scale_crop’:
+/home/runner/work/pgi-2025-the_smooth_fjords/pgi-2025-the_smooth_fjords/src/features.c:588:44: warning: passing argument 2 of ‘get_pixel’ makes pointer from integer without a cast [-Wint-conversion]
+  588 |             pixelRGB* px = get_pixel(data, width, height, channels, real_start_x + x, real_start_y + y);
+      |                                            ^~~~~
+      |                                            |
+      |                                            int
+In file included from /home/runner/work/pgi-2025-the_smooth_fjords/pgi-2025-the_smooth_fjords/src/features.h:3,
+                 from /home/runner/work/pgi-2025-the_smooth_fjords/pgi-2025-the_smooth_fjords/src/features.c:5:
+/home/runner/work/pgi-2025-the_smooth_fjords/pgi-2025-the_smooth_fjords/src/utils.h:17:62: note: expected ‘const unsigned int *’ but argument is of type ‘int’
+   17 | pixelRGB *get_pixel(unsigned char *data, const unsigned int *width, const unsigned int *height, const unsigned int n, const unsigned int x, const unsigned int y);
+      |                                          ~~~~~~~~~~~~~~~~~~~~^~~~~
+/home/runner/work/pgi-2025-the_smooth_fjords/pgi-2025-the_smooth_fjords/src/features.c:588:51: warning: passing argument 3 of ‘get_pixel’ makes pointer from integer without a cast [-Wint-conversion]
+  588 |             pixelRGB* px = get_pixel(data, width, height, channels, real_start_x + x, real_start_y + y);
+      |                                                   ^~~~~~
+      |                                                   |
+      |                                                   int
+/home/runner/work/pgi-2025-the_smooth_fjords/pgi-2025-the_smooth_fjords/src/utils.h:17:89: note: expected ‘const unsigned int *’ but argument is of type ‘int’
+   17 | pixelRGB *get_pixel(unsigned char *data, const unsigned int *width, const unsigned int *height, const unsigned int n, const unsigned int x, const unsigned int y);
+      |                                                                     ~~~~~~~~~~~~~~~~~~~~^~~~~~
