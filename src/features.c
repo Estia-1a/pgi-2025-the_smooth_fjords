@@ -679,59 +679,59 @@ void scale_nearest(char*source_path, float scale) {
     int nbChannels;
     unsigned char*source_data;
     unsigned char*target_data;
-
+ 
     if (!read_image_data(source_path, &source_data, &width, &height, &nbChannels)){
         printf("Erreur : impossible de lire l'image source \n");
         return;
-    }   
-
+    }  
+ 
     int target_width = (int)(width * scale);
     int target_height = (int)(height * scale);
-
+ 
     if (scale > 0) {
         if (target_width == 0) target_width = 1;
         if (target_height == 0) target_height = 1;
     }
-
+ 
     if (target_width <=0 || target_height <=0) {
         printf("Erreur : dimension invalides (scale = %.2f)\n", scale);
         free(source_data);
         return;
     }
-
+ 
     target_data = (unsigned char*)malloc(target_width * target_height * nbChannels * sizeof(unsigned char));
     if (target_data == NULL) {
         printf("Erreur : impossible d'allouer la memoire pour l'image de sortie \n");
         free(source_data);
         return;
     }    
-
-
-
+ 
+ 
+ 
         int y,x,c;
         for (y = 0; y < target_height; y ++) {
             for (x = 0; x < target_width; x ++) {
-
+ 
                 int src_x = (int)((float)x / scale + 0.5f);
                 int src_y = (int)((float)y / scale + 0.5f);
-                
+               
                 if (src_x < 0) src_x = 0;
                 if (src_y < 0) src_y = 0;
                 if (src_x >= width) src_x = width -1;
                 if (src_y >= height) src_y = height -1;
-
-
+ 
+ 
                 int target_pixel_index = (y * target_width + x)*nbChannels;
                 int source_pixel_index = (src_y * width + src_x)*nbChannels;
-
+ 
                 for (c=0; c < nbChannels; c++) {
                     target_data[target_pixel_index + c]= source_data[source_pixel_index + c];
                 }
-                
+               
             }
         }
         write_image_data("image_out.bmp", target_data, target_width, target_height);
-
+ 
         free(source_data);
         free(target_data);
 }
