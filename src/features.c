@@ -705,8 +705,8 @@ void scale_nearest(char*source_path, float scale) {
         for (y = 0; y < target_height; y ++) {
             for (x = 0; x < target_width; x ++) {
 
-                int src_x = (int)((float)x / scale );
-                int src_y = (int)((float)y / scale );
+                int src_x = (int)((float)x / scale +0.5f);
+                int src_y = (int)((float)y / scale +0.5f);
                 
                 if (src_x < 0) src_x = 0;
                 if (src_y < 0) src_y = 0;
