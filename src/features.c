@@ -569,10 +569,17 @@ void scale_crop(char* filename, int center_x, int center_y, int crop_width, int 
         return;
     }
  
-    int desired_start_x = center_x - crop_width / 2;
-    int desired_start_y = center_y - crop_height / 2;
-    int desired_end_x = center_x + crop_width / 2;
-    int desired_end_y = center_y + crop_height /2;
+
+    int half_crop_width_left = crop_width / 2;
+    int half_crop_width_right = crop_width - half_crop_width_left;
+
+    int half_crop_height_top = crop_height / 2;
+    int half_crop_height_bottom = crop_height - half_crop_height_top;
+
+    int desired_start_x = center_x - half_crop_width_left;
+    int desired_start_y = center_y - half_crop_height_top;
+    int desired_end_x = center_x + half_crop_width_right;
+    int desired_end_y = center_y + half_crop_height_bottom;
 
     int real_src_start_x = (desired_start_x < 0) ? 0 : desired_start_x;
     int real_src_start_y = (desired_start_y < 0) ? 0 : desired_start_y;
@@ -598,6 +605,7 @@ void scale_crop(char* filename, int center_x, int center_y, int crop_width, int 
 
     for (int y = 0; y < real_output_height; y++) {
         for (int x = 0; x < real_output_width; x++) {
+            
             int original_pixel_x = real_src_start_x + x;
             int original_pixel_y = real_src_start_y + y;
 
